@@ -1,2 +1,2 @@
 #!/bin/bash
-tsc ts/*ts -out js
+tsc ts/*.ts -out js
