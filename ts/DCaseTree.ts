@@ -24,6 +24,24 @@ export class DCaseNode {
 	convertAllChildNodeIntoMarkdown() : void {
 	}
 
+	/* for debug */
+	dump() : void {
+		this.dumpAllChild(0);
+	}
+
+	dumpAllChild(depth : number) : void { // it is private method (don't use this)
+		var data : string = "";
+		for(var i : number = 0; i < depth; i++) {
+			data += "\t";
+		}
+		data += this.NodeType + ":" + this.ThisNodeId;
+		console.log(data); // dump this node
+
+		for(var i : number = 0; i < this.Children.length; i++) {
+			this.Children[i].dumpAllChild(depth + 1);
+		}
+	}
+
 }
 
 export class SolutionNode extends DCaseNode {

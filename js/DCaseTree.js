@@ -18,6 +18,20 @@ var DCaseNode = (function () {
     };
     DCaseNode.prototype.convertAllChildNodeIntoMarkdown = function () {
     };
+    DCaseNode.prototype.dump = function () {
+        this.dumpAllChild(0);
+    };
+    DCaseNode.prototype.dumpAllChild = function (depth) {
+        var data = "";
+        for(var i = 0; i < depth; i++) {
+            data += "\t";
+        }
+        data += this.NodeType + ":" + this.ThisNodeId;
+        console.log(data);
+        for(var i = 0; i < this.Children.length; i++) {
+            this.Children[i].dumpAllChild(depth + 1);
+        }
+    };
     return DCaseNode;
 })();
 exports.DCaseNode = DCaseNode;
