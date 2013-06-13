@@ -66,12 +66,25 @@ export class GoalNode extends ContextAddableNode {
 		super("Goal", Description, MetaData, ThisNodeId);
 	}
 
+	convertAllChildNodeIntoJson(jsonArray : any[]) : any[]{
+		jsonArray.push({"key" : "goal"});
+		for(var i = 0; i < this.Children.length; i++) {
+			this.Children[i].convertAllChildNodeIntoJson(jsonArray);
+		}
+		return jsonArray;
+	}
+
 }
 
 export class StrategyNode extends DCaseNode {
 
 	constructor(Description : string, MetaData, ThisNodeId : number) {
 		super("Strategy", Description, MetaData, ThisNodeId);
+	}
+
+	convertAllChildNodeIntoJson(jsonArray : any[]) : any[]{
+		jsonArray.push({"key" : "strategy"});
+		return jsonArray;
 	}
 
 }
