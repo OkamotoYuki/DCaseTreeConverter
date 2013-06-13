@@ -1,2 +1,2 @@
 var DCaseTree = require("./DCaseTree")
-var root = new DCaseTree.GoalNode("g1", "hogehoge");
+var root = new DCaseTree.GoalNode("", "hogehoge", 1);
