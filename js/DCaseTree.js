@@ -12,7 +12,27 @@ var DCaseNode = (function () {
         this.Children = [];
     }
     DCaseNode.prototype.convertAllChildNodeIntoJson = function (jsonArray) {
-        return [];
+        var jsonTempArray = {
+        };
+        jsonTempArray["ThisNodeId"] = this.ThisNodeId;
+        jsonTempArray["NodeType"] = this.NodeType;
+        jsonTempArray["Description"] = this.Description;
+        var metaDataElements = {
+        };
+        metaDataElements["Type"] = this.MetaData.Type;
+        metaDataElements["Subject"] = this.MetaData.Subject;
+        metaDataElements["Description"] = this.MetaData.Description;
+        jsonTempArray["MetaData"] = metaDataElements;
+        var childrenId = [];
+        for(var i = 0; i < this.Children.length; i++) {
+            childrenId[i] = this.Children[i].ThisNodeId;
+        }
+        jsonTempArray["Children"] = childrenId;
+        jsonArray.push(jsonTempArray);
+        for(var j = 0; j < this.Children.length; j++) {
+            this.Children[j].convertAllChildNodeIntoJson(jsonArray);
+        }
+        return jsonArray;
     };
     DCaseNode.prototype.convertAllChildNodeIntoXml = function () {
     };
@@ -72,15 +92,6 @@ var GoalNode = (function (_super) {
     function GoalNode(Description, MetaData, ThisNodeId) {
         _super.call(this, "Goal", Description, MetaData, ThisNodeId);
     }
-    GoalNode.prototype.convertAllChildNodeIntoJson = function (jsonArray) {
-        jsonArray.push({
-            "key": "goal"
-        });
-        for(var i = 0; i < this.Children.length; i++) {
-            this.Children[i].convertAllChildNodeIntoJson(jsonArray);
-        }
-        return jsonArray;
-    };
     return GoalNode;
 })(ContextAddableNode);
 exports.GoalNode = GoalNode;
@@ -89,12 +100,6 @@ var StrategyNode = (function (_super) {
     function StrategyNode(Description, MetaData, ThisNodeId) {
         _super.call(this, "Strategy", Description, MetaData, ThisNodeId);
     }
-    StrategyNode.prototype.convertAllChildNodeIntoJson = function (jsonArray) {
-        jsonArray.push({
-            "key": "strategy"
-        });
-        return jsonArray;
-    };
     return StrategyNode;
 })(DCaseNode);
 exports.StrategyNode = StrategyNode;

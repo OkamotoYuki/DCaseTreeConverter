@@ -15,7 +15,30 @@ export class DCaseNode {
 	}
 
 	convertAllChildNodeIntoJson(jsonArray : any[]) : any[]{
-		return [];
+		var jsonTempArray : any = {};
+		jsonTempArray["ThisNodeId"] = this.ThisNodeId;
+		jsonTempArray["NodeType"]   = this.NodeType;
+		jsonTempArray["Description"]= this.Description
+
+		var metaDataElements : any = {};
+		metaDataElements["Type"]    = this.MetaData.Type;
+		metaDataElements["Subject"] = this.MetaData.Subject;
+		metaDataElements["Description"] = this.MetaData.Description;
+
+		jsonTempArray["MetaData"]   = metaDataElements;
+		
+		var childrenId : number[] = [];
+		for(var i : number = 0; i < this.Children.length ; i++) {
+			childrenId[i] = this.Children[i].ThisNodeId;
+		}
+		jsonTempArray["Children"] = childrenId;
+
+		jsonArray.push(jsonTempArray);
+
+		for(var j : number = 0; j < this.Children.length ; j++){
+			this.Children[j].convertAllChildNodeIntoJson(jsonArray);
+		}
+		return jsonArray;
 	}
 
 	convertAllChildNodeIntoXml() : void {
@@ -84,25 +107,12 @@ export class GoalNode extends ContextAddableNode {
 		super("Goal", Description, MetaData, ThisNodeId);
 	}
 
-	convertAllChildNodeIntoJson(jsonArray : any[]) : any[]{
-		jsonArray.push({"key" : "goal"});
-		for(var i = 0; i < this.Children.length; i++) {
-			this.Children[i].convertAllChildNodeIntoJson(jsonArray);
-		}
-		return jsonArray;
-	}
-
 }
 
 export class StrategyNode extends DCaseNode {
 
 	constructor(Description : string, MetaData, ThisNodeId : number) {
 		super("Strategy", Description, MetaData, ThisNodeId);
-	}
-
-	convertAllChildNodeIntoJson(jsonArray : any[]) : any[]{
-		jsonArray.push({"key" : "strategy"});
-		return jsonArray;
 	}
 
 }

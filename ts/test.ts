@@ -5,3 +5,6 @@ var child : DCaseTree.DCaseNode = new DCaseTree.StrategyNode("", "hogehoge", 1);
 
 root.Children.push(child);
 root.dump();
+
+var testJson : any[] = [];
+console.log(root.convertAllChildNodeIntoJson(testJson));
