@@ -125,7 +125,7 @@ export class Converter {
 		parentNode.Children.push(solutionNode);
 	}
 
-	parseGoal(text : string, depth : number, parentNode : DCaseTree.DCaseNode) : DCaseTree.DCaseNode[] {
+	parseGoal(text : string, depth : number, parentNode : DCaseTree.DCaseNode) : DCaseTree.DCaseNode {
 		depth++;
 
 		var goalNodes : DCaseTree.DCaseNode[] = [];
@@ -169,22 +169,22 @@ export class Converter {
 			}
 		}
 
-		if(parentNode != null) {
-			parentNode.Children = goalNodes;
+		if(parentNode == null) {
+			if(goalNodes.length != 1) {
+				outputError("root node must be one node");
+			}
+			return goalNodes[0];
 		}
-
-		return goalNodes;
+		else {
+			parentNode.Children = goalNodes;
+			return parentNode;
+		}
 	}
 
 	parseMarkdown(markdownText : string) : DCaseTree.DCaseNode {
 		this.initUsedNodeIdList(markdownText);
-		var rootNode : DCaseTree.DCaseNode[] = this.parseGoal(markdownText, 0, null);
-
-		if(rootNode.length != 1) {
-			outputError("root node must be one node");
-  		return null;
-		}
-		return rootNode[0];
+		var rootNode : DCaseTree.DCaseNode = this.parseGoal(markdownText, 0, null);
+		return rootNode;
 	}
 
 }

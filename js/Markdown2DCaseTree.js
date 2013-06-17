@@ -133,19 +133,20 @@ var Converter = (function () {
                 this.parseSolution(childBlock, depth, goalNode);
             }
         }
-        if(parentNode != null) {
+        if(parentNode == null) {
+            if(goalNodes.length != 1) {
+                outputError("root node must be one node");
+            }
+            return goalNodes[0];
+        } else {
             parentNode.Children = goalNodes;
+            return parentNode;
         }
-        return goalNodes;
     };
     Converter.prototype.parseMarkdown = function (markdownText) {
         this.initUsedNodeIdList(markdownText);
         var rootNode = this.parseGoal(markdownText, 0, null);
-        if(rootNode.length != 1) {
-            outputError("root node must be one node");
-            return null;
-        }
-        return rootNode[0];
+        return rootNode;
     };
     return Converter;
 })();
