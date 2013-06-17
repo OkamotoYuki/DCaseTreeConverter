@@ -21,7 +21,7 @@ var Converter = (function () {
         }
         return false;
     };
-    Converter.prototype.createUsedNodeIdList = function (text) {
+    Converter.prototype.initUsedNodeIdList = function (text) {
         var lines = splitByLines(text);
         for(var i = 0; i < lines.length; i++) {
             var nodeIdMacher = /#+.+\s.+\s/g;
@@ -139,7 +139,7 @@ var Converter = (function () {
         return goalNodes;
     };
     Converter.prototype.parseMarkdown = function (markdownText) {
-        this.createUsedNodeIdList(markdownText);
+        this.initUsedNodeIdList(markdownText);
         var rootNode = this.parseGoal(markdownText, 0, null);
         if(rootNode.length != 1) {
             outputError("root node must be one node");

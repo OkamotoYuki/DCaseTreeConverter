@@ -29,7 +29,7 @@ export class Converter {
 		return false;
 	}
 
-	createUsedNodeIdList(text : string) : void {
+	initUsedNodeIdList(text : string) : void {
 		var lines : string[] = splitByLines(text);
 
 		for(var i : number = 0; i < lines.length; i++) {
@@ -177,7 +177,7 @@ export class Converter {
 	}
 
 	parseMarkdown(markdownText : string) : DCaseTree.DCaseNode {
-		this.createUsedNodeIdList(markdownText);
+		this.initUsedNodeIdList(markdownText);
 		var rootNode : DCaseTree.DCaseNode[] = this.parseGoal(markdownText, 0, null);
 
 		if(rootNode.length != 1) {
