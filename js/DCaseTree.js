@@ -11,28 +11,23 @@ var DCaseNode = (function () {
         this.ThisNodeId = ThisNodeId;
         this.Children = [];
     }
-    DCaseNode.prototype.convertAllChildNodeIntoJson = function (jsonArray) {
-        var jsonTempArray = {
+    DCaseNode.prototype.convertAllChildNodeIntoJson = function (jsonData) {
+        var elem = {
         };
-        jsonTempArray["ThisNodeId"] = this.ThisNodeId;
-        jsonTempArray["NodeType"] = this.NodeType;
-        jsonTempArray["Description"] = this.Description;
-        var metaDataElements = {
-        };
-        metaDataElements["Type"] = this.MetaData.Type;
-        metaDataElements["Subject"] = this.MetaData.Subject;
-        metaDataElements["Description"] = this.MetaData.Description;
-        jsonTempArray["MetaData"] = metaDataElements;
-        var childrenId = [];
+        elem["NodeType"] = this.NodeType;
+        elem["Description"] = this.Description;
+        elem["ThisNodeId"] = this.ThisNodeId;
+        elem["MetaData"] = this.MetaData;
+        var childrenIds = [];
         for(var i = 0; i < this.Children.length; i++) {
-            childrenId[i] = this.Children[i].ThisNodeId;
+            childrenIds[i] = this.Children[i].ThisNodeId;
         }
-        jsonTempArray["Children"] = childrenId;
-        jsonArray.push(jsonTempArray);
+        elem["Children"] = childrenIds;
+        jsonData.push(elem);
         for(var j = 0; j < this.Children.length; j++) {
-            this.Children[j].convertAllChildNodeIntoJson(jsonArray);
+            this.Children[j].convertAllChildNodeIntoJson(jsonData);
         }
-        return jsonArray;
+        return jsonData;
     };
     DCaseNode.prototype.convertAllChildNodeIntoXml = function () {
     };
