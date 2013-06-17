@@ -26,7 +26,7 @@ export class DCaseNode {
 		metaDataElements["Description"] = this.MetaData.Description;
 
 		jsonTempArray["MetaData"]   = metaDataElements;
-		
+
 		var childrenId : number[] = [];
 		for(var i : number = 0; i < this.Children.length ; i++) {
 			childrenId[i] = this.Children[i].ThisNodeId;

@@ -5,4 +5,4 @@ var test : string = "#Goal g1 4\nG\n\nsubject:G\nhoge\n#Strategy\nAlternative\n\
 
 var m2dc : Markdown2DCaseTreeConverter.Converter = new Markdown2DCaseTreeConverter.Converter();
 var root : DCaseTree.DCaseNode = m2dc.parseMarkdown(test);
-console.log(root.dump());
+root.dump();

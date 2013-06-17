@@ -1,5 +1,9 @@
 import DCaseTree = module("DCaseTree");
 
+function outputError(o : any) : void {
+		console.log("error: " + o);
+}
+
 function splitByLines(text : string) : string[] {
 	return text.split(/\r\n|\r|\n/g);
 }
@@ -17,10 +21,6 @@ export class Converter {
 	constructor() {
 	}
 
-	outputError(o : any) : void {
-		console.log("error: " + o);
-	}
-
 	isUsedNodeId(nodeId : number) : bool {
 		for(var i : number = 0; i < this.usedNodeIdList.length; i++) {
 			if(nodeId == this.usedNodeIdList[i]) {
@@ -32,13 +32,14 @@ export class Converter {
 
 	createUsedNodeIdList(text : string) : void {
 		var lines : string[] = splitByLines(text);
+
 		for(var i : number = 0; i < lines.length; i++) {
-			var re : RegExp = /#+.+\s.+\s/g;
-			re.exec(lines[i]);
-			if(re.lastIndex > 0) {
-				var nodeIdText : string = lines[i].substring(re.lastIndex);
+			var nodeIdMacher : RegExp = /#+.+\s.+\s/g;
+			nodeIdMacher.exec(lines[i]);
+			if(nodeIdMacher.lastIndex > 0) {
+				var nodeIdText : string = lines[i].substring(nodeIdMacher.lastIndex);
 				if(!isNumber(nodeIdText)) {
-					this.outputError("node id must be number");
+					outputError("node id must be number");
 				}
 				var nodeId : number = parseInt(nodeIdText);
 				if(!this.isUsedNodeId(nodeId)) {
@@ -58,12 +59,71 @@ export class Converter {
 	}
 
 	parseMetaData(text : string, node : DCaseTree.DCaseNode) : void {
+		var lines : string[] = splitByLines(text);
+
+		if(lines.length < 2) {
+			outputError("node doesn't include enough data");
+		}
+
+		if(lines[0] != "") {
+			var nodeIdMacher : RegExp = /\s.*\s/g;
+			nodeIdMacher.exec(lines[0]);
+			if(nodeIdMacher.lastIndex <= 0) {
+				outputError("syntax is incorrect (nodeid)");
+			}
+
+			var nodeIdText = lines[0].substring(nodeIdMacher.lastIndex);
+			if(!isNumber(nodeIdText)) {
+				outputError("node id must be number");
+			}
+			var nodeId : number = parseInt(nodeIdText);
+			node.ThisNodeId = nodeId;
+		}
+		node.Description = lines[1];
+
+		if(lines.length == 2) {
+			return;
+		}
+
+		// TODO handle other meta data
 	}
 
 	parseStrategy(text : string, depth : number, parentNode : DCaseTree.DCaseNode) : void {
+		if(parentNode == null) {
+			outputError("strategy node must be child node");
+		}
+
+		var strategyMacher : RegExp = /#Strategy/g;
+		strategyMacher.exec(text);
+		text = text.substring(strategyMacher.lastIndex);
+
+		var strategyNode : DCaseTree.StrategyNode = new DCaseTree.StrategyNode(null, null, null);
+		var metaDataText = text.substring(0, text.indexOf("#"));
+		var childBlock = text.substring(text.indexOf("#"));
+		this.parseMetaData(metaDataText, strategyNode);
+		if(strategyNode.ThisNodeId == null) {
+			strategyNode.ThisNodeId = this.createNewNodeId();
+		}
+		parentNode.Children.push(strategyNode);
+
+		this.parseGoal(childBlock, depth, strategyNode);
 	}
 
 	parseSolution(text : string, depth : number, parentNode : DCaseTree.DCaseNode) : void {
+		if(parentNode == null) {
+			outputError("strategy node must be child node");
+		}
+
+		var solutionMacher : RegExp = /#Solution/g;
+		solutionMacher.exec(text);
+		var metaDataText : string = text.substring(solutionMacher.lastIndex);
+
+		var solutionNode : DCaseTree.SolutionNode = new DCaseTree.SolutionNode(null, null, null);
+		this.parseMetaData(metaDataText, solutionNode);
+		if(solutionNode.ThisNodeId == null) {
+			solutionNode.ThisNodeId = this.createNewNodeId();
+		}
+		parentNode.Children.push(solutionNode);
 	}
 
 	parseGoal(text : string, depth : number, parentNode : DCaseTree.DCaseNode) : DCaseTree.DCaseNode[] {
@@ -74,7 +134,6 @@ export class Converter {
 		var separator : RegExp = new RegExp("\n#{" + depth + "}Goal", "g");
 		var goalBlocks = text.split(separator);
 		var goalMacher : RegExp = /#+Goal/g;
-
 		goalMacher.exec(goalBlocks[0]);
 		goalBlocks[0] = goalBlocks[0].substring(goalMacher.lastIndex);
 
@@ -112,7 +171,7 @@ export class Converter {
 		}
 
 		if(parentNode != null) {
-			parentNode.Children.concat(goalNodes);
+			parentNode.Children = goalNodes;
 		}
 
 		return goalNodes;
@@ -123,7 +182,7 @@ export class Converter {
 		var rootNode : DCaseTree.DCaseNode[] = this.parseGoal(markdownText, 0, null);
 
 		if(rootNode.length != 1) {
-			this.outputError("root node must be one node");
+			outputError("root node must be one node");
   		return null;
 		}
 		return rootNode[0];
