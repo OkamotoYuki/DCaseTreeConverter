@@ -10,7 +10,6 @@ function isNumber(text) {
 }
 var Converter = (function () {
     function Converter() {
-        this.rootNode = null;
         this.usedNodeIdList = [];
         this.currentNodeId = 0;
     }

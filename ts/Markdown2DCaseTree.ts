@@ -14,7 +14,6 @@ function isNumber(text : string) : bool {
 
 export class Converter {
 
-	rootNode : DCaseTree.DCaseNode = null;
 	usedNodeIdList : number[] = [];
 	currentNodeId : number = 0;
 
