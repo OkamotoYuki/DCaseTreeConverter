@@ -43,20 +43,14 @@ export class DCaseNode {
 	convertAllChildNodeIntoXml() : void {
 	}
 
-	convertAllChildNodeIntoMarkdown(goalNum : number, straNum : number, soluNum : number) : void {
+	convertAllChildNodeIntoMarkdown(goalNum : number) : void {
 		var outputStr : string = "";
 		var targetNum : number = 0;
 		var goalFlag : bool = false;
-		var straFlag : bool = false;
-		var soluFlag : bool = false;
 
-		switch(this.NodeType){
-			case "Goal":
-				targetNum = goalNum; goalFlag = true; break;
-			case "Strategy":
-				targetNum = straNum; straFlag = true; break;
-			case "Solution":
-				targetNum = soluNum; soluFlag = true; break;
+	if(this.NodeType == "Goal"){
+				targetNum = goalNum;
+				goalFlag = true;
 		}
 
 		for(var i : number = 0; i < targetNum; i++){
@@ -74,11 +68,9 @@ export class DCaseNode {
 
 		for(var k : number = 0; k < this.Children.length; k++) {
 			if(goalFlag == true) {
-				this.Children[k].convertAllChildNodeIntoMarkdown(goalNum + 1, straNum, soluNum);
-			} else if (straFlag == true) { 
-				this.Children[k].convertAllChildNodeIntoMarkdown(goalNum, straNum + 1, soluNum);
+				this.Children[k].convertAllChildNodeIntoMarkdown(goalNum + 1);
 			} else {
-				this.Children[k].convertAllChildNodeIntoMarkdown(goalNum, straNum, soluNum + 1);
+				this.Children[k].convertAllChildNodeIntoMarkdown(goalNum);
 			}
 		}
 	}

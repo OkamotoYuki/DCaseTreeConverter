@@ -18,5 +18,4 @@ child4.Children.push(child6);
 child5.Children.push(child7);
 child6.Children.push(child8);
 child8.Children.push(child9);
-root.dump();
-root.convertAllChildNodeIntoMarkdown(1, 1, 1);
+root.convertAllChildNodeIntoMarkdown(1);
