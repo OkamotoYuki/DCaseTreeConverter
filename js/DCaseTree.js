@@ -3,6 +3,9 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+function outputText(text) {
+    console.log(text);
+}
 var DCaseNode = (function () {
     function DCaseNode(NodeType, Description, MetaData, ThisNodeId) {
         this.NodeType = NodeType;

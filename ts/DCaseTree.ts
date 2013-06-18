@@ -1,3 +1,7 @@
+function outputText(text : string) : void {
+	console.log(text);
+}
+
 export class DCaseNode {
 
 	NodeType : string;
