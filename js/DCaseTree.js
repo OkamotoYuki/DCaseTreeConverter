@@ -34,7 +34,46 @@ var DCaseNode = (function () {
     };
     DCaseNode.prototype.convertAllChildNodeIntoXml = function () {
     };
-    DCaseNode.prototype.convertAllChildNodeIntoMarkdown = function () {
+    DCaseNode.prototype.convertAllChildNodeIntoMarkdown = function (goalNum, straNum, soluNum) {
+        var outputStr = "";
+        var targetNum = 0;
+        var goalFlag = false;
+        var straFlag = false;
+        var soluFlag = false;
+        switch(this.NodeType) {
+            case "Goal":
+                targetNum = goalNum;
+                goalFlag = true;
+                break;
+            case "Strategy":
+                targetNum = straNum;
+                straFlag = true;
+                break;
+            case "Solution":
+                targetNum = soluNum;
+                soluFlag = true;
+                break;
+        }
+        for(var i = 0; i < targetNum; i++) {
+            outputStr += "#";
+        }
+        outputStr += this.NodeType + " " + "NodeName(not defined)" + " " + this.ThisNodeId;
+        outputText(outputStr);
+        outputText(this.Description);
+        outputText("------");
+        for(var j = 0; j < this.MetaData.length; j++) {
+            outputText(this.MetaData[j]);
+        }
+        outputText("------\n");
+        for(var k = 0; k < this.Children.length; k++) {
+            if(goalFlag == true) {
+                this.Children[k].convertAllChildNodeIntoMarkdown(goalNum + 1, straNum, soluNum);
+            } else if(straFlag == true) {
+                this.Children[k].convertAllChildNodeIntoMarkdown(goalNum, straNum + 1, soluNum);
+            } else {
+                this.Children[k].convertAllChildNodeIntoMarkdown(goalNum, straNum, soluNum + 1);
+            }
+        }
     };
     DCaseNode.prototype.dump = function () {
         this.dumpAllChild(0);
