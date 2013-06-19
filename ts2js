@@ -1,2 +1,9 @@
 #!/bin/bash
+
 tsc ts/*.ts -out js
+
+if [ ! -d js/node_modules ]
+then
+	cd js
+	npm install jquery
+fi
