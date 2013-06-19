@@ -773,5 +773,23 @@ declare var jQuery: JQueryStatic;
 declare var $: JQueryStatic;
 
 declare module "jquery" {
+
     // add function which you want to use
+    export function (selector: string, context?: any): JQuery;
+    export function (element: Element): JQuery;
+    export function (object: {}): JQuery;
+    export function (elementArray: Element[]): JQuery;
+    export function (object: JQuery): JQuery;
+    export function (func: Function): JQuery;
+    export function (array: any[]): JQuery;
+    export function (): JQuery;
+
+    export function text(): string;
+    export function text(textString: any): JQuery;
+    export function text(textString: (index: number, text: string) => string): JQuery;
+
+    export function find(selector: string): JQuery;
+    export function find(element: any): JQuery;
+    export function find(obj: JQuery): JQuery;
+
 }
