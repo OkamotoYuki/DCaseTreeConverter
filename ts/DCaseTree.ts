@@ -48,9 +48,11 @@ export class DCaseNode {
 		var targetNum : number = 0;
 		var goalFlag : bool = false;
 
-	if(this.NodeType == "Goal"){
-				targetNum = goalNum;
-				goalFlag = true;
+		if(this.NodeType == "Goal"){
+			targetNum = goalNum;
+			goalFlag  = true;
+		} else {
+			targetNum = 1;
 		}
 
 		for(var i : number = 0; i < targetNum; i++){
@@ -59,8 +61,9 @@ export class DCaseNode {
 
 		outputStr += this.NodeType + " " + "NodeName(not defined)" + " " + this.ThisNodeId;
 		outputText(outputStr)
-		outputText(this.Description);
+		outputText(this.Description + "\n");
 		outputText("------");
+
 		for(var j : number = 0; j < this.MetaData.length; j++){ 
 			outputText(this.MetaData[j]);
 		}
