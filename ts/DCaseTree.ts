@@ -1,3 +1,5 @@
+///<reference path='../d.ts/DefinitelyTyped/jquery/jquery.d.ts'/>
+
 function outputText(text : string) : void {
 	console.log(text);
 }
