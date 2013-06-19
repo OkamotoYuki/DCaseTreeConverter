@@ -771,3 +771,7 @@ interface JQuery {
 
 declare var jQuery: JQueryStatic;
 declare var $: JQueryStatic;
+
+declare module "jquery" {
+    // add function which you want to use
+}
