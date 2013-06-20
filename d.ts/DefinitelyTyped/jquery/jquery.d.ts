@@ -784,12 +784,4 @@ declare module "jquery" {
     export function (array: any[]): JQuery;
     export function (): JQuery;
 
-    export function text(): string;
-    export function text(textString: any): JQuery;
-    export function text(textString: (index: number, text: string) => string): JQuery;
-
-    export function find(selector: string): JQuery;
-    export function find(element: any): JQuery;
-    export function find(obj: JQuery): JQuery;
-
 }
