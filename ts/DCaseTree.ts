@@ -45,40 +45,63 @@ export class DCaseNode {
 	}
 
 	convertAllChildNodeIntoXml() : void {
+	var $dcaseObj : JQuery = $("dcase:Argument");
+		var linkNum: number = 1;
+		var $nodeObj : JQuery = $("rootBasicnode");
+		var nodeId : string   = this.ThisNodeId.toString();
+		$nodeObj.attr("xsi:type", "dcase:"+ this.NodeType);
+		$nodeObj.attr("id", nodeId);
+	//	if(this.NodeName == undefined){
+		$nodeObj.attr("name", "Undefined");
+	//	}
+	//	$nodeObj.attr("desc", this.Description);
+
+		$nodeObj.appendTo($dcaseObj);
+
+		for(var i = 0; i < this.Children.length; i ++){
+			var $linkObj : JQuery = $("rootBasicLink");
+			$linkObj.attr("xsi:type", "dcase:link");
+			$linkObj.attr("id",  nodeId + "-" + this.Children[i].ThisNodeId.toString());
+			$linkObj.attr("source", nodeId);
+			$linkObj.attr("target", this.Children[i].ThisNodeId.toString());
+			$linkObj.attr("name", "Link_" + linkNum.toString());
+
+			linkNum++;
+
+			$linkObj.appendTo($dcaseObj);
+
+			this.Children[i].convertAllChildNodeIntoXml();
+		}
+
+		var strXml = $dcaseObj.text();
+		console.log(strXml);
 	}
 
 	convertAllChildNodeIntoMarkdown(goalNum : number) : void {
 		var outputStr : string = "";
-		var targetNum : number = 0;
 		var goalFlag : bool = false;
 
 		if(this.NodeType == "Goal"){
-			targetNum = goalNum;
 			goalFlag  = true;
-		} else {
-			targetNum = 1;
+			goalNum++;	
 		}
 
-		for(var i : number = 0; i < targetNum; i++){
-			outputStr += "#";
+		for(var i : number = 0; i < goalNum; i++){
+			outputStr += "*";
 		}
 
 		outputStr += this.NodeType + " " + "NodeName(not defined)" + " " + this.ThisNodeId;
 		outputText(outputStr)
 		outputText(this.Description + "\n");
-		outputText("------");
+		outputText("---");
 
 		for(var j : number = 0; j < this.MetaData.length; j++){ 
 			outputText(this.MetaData[j]);
 		}
-		outputText("------\n");
+		outputText("---");
 
 		for(var k : number = 0; k < this.Children.length; k++) {
-			if(goalFlag == true) {
-				this.Children[k].convertAllChildNodeIntoMarkdown(goalNum + 1);
-			} else {
-				this.Children[k].convertAllChildNodeIntoMarkdown(goalNum);
-			}
+			this.Children[k].convertAllChildNodeIntoMarkdown(goalNum);
 		}
 	}
 
