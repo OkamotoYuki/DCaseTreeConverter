@@ -126,6 +126,31 @@ export class Converter {
 		node.MetaData = MetaData;
 	}
 
+	parseContext(text : string, depth : number, parentNode : DCaseTree.ContextAddableNode) : void {
+		if(parentNode == null) {
+			outputError("context node must be child node");
+		}
+
+		var separator : RegExp = new RegExp("\n\\*{" + depth + "}Context", "g");
+		var contextBlocks = text.split(separator);
+		var contextMacher : RegExp = new RegExp("\\*{" + depth + "}Context", "g");
+		contextMacher.exec(contextBlocks[0]);
+		contextBlocks[0] = contextBlocks[0].substring(contextMacher.lastIndex);
+
+		for(var i : number = 0; i < contextBlocks.length; i++) {
+			var contextNode : DCaseTree.ContextNode = new DCaseTree.ContextNode(null, null, null);
+			var nodeDataText : string = contextBlocks[i];
+
+			this.parseNodeData(nodeDataText, contextNode);
+
+			if(contextNode.ThisNodeId == null) {
+				contextNode.ThisNodeId = this.createNewNodeId();
+			}
+
+			parentNode.Contexts.push(contextNode);
+		}
+	}
+
 	parseStrategy(text : string, depth : number, parentNode : DCaseTree.DCaseNode) : void {
 		if(parentNode == null) {
 			outputError("strategy node must be child node");
@@ -165,7 +190,7 @@ export class Converter {
 					this.parseGoal(childBlockText, depth, strategyNode);
 				}
 				else if(splitByLines(childBlockText)[0].match("Context") != null) {
-					// TODO parse context block
+					this.parseContext(childBlockText, depth, strategyNode);
 				}
 			}
 		}
@@ -173,7 +198,7 @@ export class Converter {
 
 	parseSolution(text : string, depth : number, parentNode : DCaseTree.DCaseNode) : void {
 		if(parentNode == null) {
-			outputError("strategy node must be child node");
+			outputError("solution node must be child node");
 		}
 
 		var separator : RegExp = new RegExp("\n\\*{" + depth + "}Solution", "g");
@@ -239,7 +264,7 @@ export class Converter {
 				this.parseSolution(childBlockText, depth, goalNode);
 			}
 			else if(splitByLines(childBlockText)[0].match("Context") != null) {
-				// TODO parse context block
+				this.parseContext(childBlockText, depth, goalNode);
 			}
 		}
 

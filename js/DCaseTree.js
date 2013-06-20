@@ -161,5 +161,5 @@ var StrategyNode = (function (_super) {
         _super.call(this, "Strategy", Description, MetaData, ThisNodeId);
     }
     return StrategyNode;
-})(DCaseNode);
+})(ContextAddableNode);
 exports.StrategyNode = StrategyNode;

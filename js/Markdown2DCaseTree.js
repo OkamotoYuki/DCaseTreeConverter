@@ -102,6 +102,25 @@ var Converter = (function () {
         }
         node.MetaData = MetaData;
     };
+    Converter.prototype.parseContext = function (text, depth, parentNode) {
+        if(parentNode == null) {
+            outputError("context node must be child node");
+        }
+        var separator = new RegExp("\n\\*{" + depth + "}Context", "g");
+        var contextBlocks = text.split(separator);
+        var contextMacher = new RegExp("\\*{" + depth + "}Context", "g");
+        contextMacher.exec(contextBlocks[0]);
+        contextBlocks[0] = contextBlocks[0].substring(contextMacher.lastIndex);
+        for(var i = 0; i < contextBlocks.length; i++) {
+            var contextNode = new DCaseTree.ContextNode(null, null, null);
+            var nodeDataText = contextBlocks[i];
+            this.parseNodeData(nodeDataText, contextNode);
+            if(contextNode.ThisNodeId == null) {
+                contextNode.ThisNodeId = this.createNewNodeId();
+            }
+            parentNode.Contexts.push(contextNode);
+        }
+    };
     Converter.prototype.parseStrategy = function (text, depth, parentNode) {
         if(parentNode == null) {
             outputError("strategy node must be child node");
@@ -132,13 +151,14 @@ var Converter = (function () {
                 if(splitByLines(childBlockText)[0].match("Goal") != null) {
                     this.parseGoal(childBlockText, depth, strategyNode);
                 } else if(splitByLines(childBlockText)[0].match("Context") != null) {
+                    this.parseContext(childBlockText, depth, strategyNode);
                 }
             }
         }
     };
     Converter.prototype.parseSolution = function (text, depth, parentNode) {
         if(parentNode == null) {
-            outputError("strategy node must be child node");
+            outputError("solution node must be child node");
         }
         var separator = new RegExp("\n\\*{" + depth + "}Solution", "g");
         var solutionBlocks = text.split(separator);
@@ -187,6 +207,7 @@ var Converter = (function () {
             } else if(splitByLines(childBlockText)[0].match("Solution") != null) {
                 this.parseSolution(childBlockText, depth, goalNode);
             } else if(splitByLines(childBlockText)[0].match("Context") != null) {
+                this.parseContext(childBlockText, depth, goalNode);
             }
         }
         if(parentNode == null) {

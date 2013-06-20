@@ -189,7 +189,7 @@ export class GoalNode extends ContextAddableNode {
 
 }
 
-export class StrategyNode extends DCaseNode {
+export class StrategyNode extends ContextAddableNode {
 
 	constructor(Description : string, MetaData, ThisNodeId : number) {
 		super("Strategy", Description, MetaData, ThisNodeId);
