@@ -12,6 +12,10 @@ function isNumber(text : string) : bool {
 	return /\d+/.test(text);
 }
 
+function isBoolean(text : string) : bool {
+	return /true|false/.test(text);
+}
+
 export class Converter {
 
 	usedNodeIdList : number[] = [];
@@ -33,7 +37,7 @@ export class Converter {
 		var lines : string[] = splitByLines(text);
 
 		for(var i : number = 0; i < lines.length; i++) {
-			var nodeIdMacher : RegExp = /#+.+\s.+\s/g;
+			var nodeIdMacher : RegExp = /\*+.+\s.+\s/g;
 			nodeIdMacher.exec(lines[i]);
 			if(nodeIdMacher.lastIndex > 0) {
 				var nodeIdText : string = lines[i].substring(nodeIdMacher.lastIndex);
@@ -57,7 +61,7 @@ export class Converter {
 		}
 	}
 
-	parseMetaData(text : string, node : DCaseTree.DCaseNode) : void {
+	parseNodeData(text : string, node : DCaseTree.DCaseNode) : void {
 		var lines : string[] = splitByLines(text);
 
 		if(lines.length < 2) {
@@ -84,7 +88,43 @@ export class Converter {
 			return;
 		}
 
-		// TODO handle other meta data
+		var MetaData : any[] = [];
+		var metaDataElem : any = null;
+
+		for(var i = 2; i < lines.length; i++) {
+			if(lines[i] == "") {
+				continue;
+			}
+			else if(lines[i] == "---") {
+				if(metaDataElem != null && "Type" in metaDataElem && "Visible" in metaDataElem) {
+					console.log(metaDataElem);
+					MetaData.push(metaDataElem);
+				}
+				metaDataElem = {};
+				continue;
+			}
+
+			var keyValPair : string[] = lines[i].split(":");
+
+			if(keyValPair.length != 2) {
+				outputError("you must put meta data in key-value format");
+			}
+
+			var key : string = keyValPair[0];
+			var valText : string = keyValPair[1];
+			var val : any;
+			if(isNumber(valText)) {
+				val = parseInt(valText);
+			}
+			else if(isBoolean(valText)) {
+				val = Boolean(valText);
+			}
+			else {
+				val = valText;
+			}
+			metaDataElem[key] = val;
+		}
+		node.MetaData = MetaData;
 	}
 
 	parseStrategy(text : string, depth : number, parentNode : DCaseTree.DCaseNode) : void {
@@ -92,20 +132,44 @@ export class Converter {
 			outputError("strategy node must be child node");
 		}
 
-		var strategyMacher : RegExp = /#Strategy/g;
-		strategyMacher.exec(text);
-		text = text.substring(strategyMacher.lastIndex);
+		var separator : RegExp = new RegExp("\n\\*{" + depth + "}Strategy", "g");
+		var strategyBlocks = text.split(separator);
+		var strategyMacher : RegExp = new RegExp("\\*{" + depth + "}Strategy", "g");
+		strategyMacher.exec(strategyBlocks[0]);
+		strategyBlocks[0] = strategyBlocks[0].substring(strategyMacher.lastIndex);
 
-		var strategyNode : DCaseTree.StrategyNode = new DCaseTree.StrategyNode(null, null, null);
-		var metaDataText = text.substring(0, text.indexOf("#"));
-		var childBlock = text.substring(text.indexOf("#"));
-		this.parseMetaData(metaDataText, strategyNode);
-		if(strategyNode.ThisNodeId == null) {
-			strategyNode.ThisNodeId = this.createNewNodeId();
+		for(var i : number = 0; i < strategyBlocks.length; i++) {
+			var strategyNode : DCaseTree.StrategyNode = new DCaseTree.StrategyNode(null, null, null);
+			var indexOfAsteriskChar : number = strategyBlocks[i].indexOf("*");
+			var nodeDataText : string;
+			var childBlockText : string;
+
+			if(indexOfAsteriskChar == -1) {
+				nodeDataText = strategyBlocks[i];
+				childBlockText = null;
+			}
+			else {
+				nodeDataText = strategyBlocks[i].substring(0, indexOfAsteriskChar);
+				childBlockText = strategyBlocks[i].substring(indexOfAsteriskChar);
+			}
+
+			this.parseNodeData(nodeDataText, strategyNode);
+
+			if(strategyNode.ThisNodeId == null) {
+				strategyNode.ThisNodeId = this.createNewNodeId();
+			}
+
+			parentNode.Children.push(strategyNode);
+
+			if(childBlockText != null) {
+				if(splitByLines(childBlockText)[0].match("Goal") != null) {
+					this.parseGoal(childBlockText, depth, strategyNode);
+				}
+				else if(splitByLines(childBlockText)[0].match("Context") != null) {
+					// TODO parse context block
+				}
+			}
 		}
-		parentNode.Children.push(strategyNode);
-
-		this.parseGoal(childBlock, depth, strategyNode);
 	}
 
 	parseSolution(text : string, depth : number, parentNode : DCaseTree.DCaseNode) : void {
@@ -113,16 +177,24 @@ export class Converter {
 			outputError("strategy node must be child node");
 		}
 
-		var solutionMacher : RegExp = /#Solution/g;
-		solutionMacher.exec(text);
-		var metaDataText : string = text.substring(solutionMacher.lastIndex);
+		var separator : RegExp = new RegExp("\n\\*{" + depth + "}Solution", "g");
+		var solutionBlocks = text.split(separator);
+		var solutionMacher : RegExp = new RegExp("\\*{" + depth + "}Solution", "g");
+		solutionMacher.exec(solutionBlocks[0]);
+		solutionBlocks[0] = solutionBlocks[0].substring(solutionMacher.lastIndex);
 
-		var solutionNode : DCaseTree.SolutionNode = new DCaseTree.SolutionNode(null, null, null);
-		this.parseMetaData(metaDataText, solutionNode);
-		if(solutionNode.ThisNodeId == null) {
-			solutionNode.ThisNodeId = this.createNewNodeId();
+		for(var i : number = 0; i < solutionBlocks.length; i++) {
+			var solutionNode : DCaseTree.SolutionNode = new DCaseTree.SolutionNode(null, null, null);
+			var nodeDataText : string = solutionBlocks[i];
+
+			this.parseNodeData(nodeDataText, solutionNode);
+
+			if(solutionNode.ThisNodeId == null) {
+				solutionNode.ThisNodeId = this.createNewNodeId();
+			}
+
+			parentNode.Children.push(solutionNode);
 		}
-		parentNode.Children.push(solutionNode);
 	}
 
 	parseGoal(text : string, depth : number, parentNode : DCaseTree.DCaseNode) : DCaseTree.DCaseNode {
@@ -130,42 +202,45 @@ export class Converter {
 
 		var goalNodes : DCaseTree.DCaseNode[] = [];
 
-		var separator : RegExp = new RegExp("\n#{" + depth + "}Goal", "g");
+		var separator : RegExp = new RegExp("\n\\*{" + depth + "}Goal", "g");
 		var goalBlocks = text.split(separator);
-		var goalMacher : RegExp = /#+Goal/g;
+		var goalMacher : RegExp = new RegExp("\\*{" + depth + "}Goal", "g");
 		goalMacher.exec(goalBlocks[0]);
 		goalBlocks[0] = goalBlocks[0].substring(goalMacher.lastIndex);
 
 		for(var i : number = 0; i < goalBlocks.length; i++) {
 			var goalNode : DCaseTree.GoalNode = new DCaseTree.GoalNode(null, null, null);
-			var indexOfSharpChar : number = goalBlocks[i].indexOf("#");
-			var metaDataText : string;
-			var childBlock : string;
+			var indexOfAsteriskChar : number = goalBlocks[i].indexOf("*");
+			var nodeDataText : string;
+			var childBlockText : string;
 
-			if(indexOfSharpChar == -1) {
-				metaDataText = goalBlocks[i];
-				childBlock = null;
+			if(indexOfAsteriskChar == -1) {
+				nodeDataText = goalBlocks[i];
+				childBlockText = null;
 			}
 			else {
-				metaDataText = goalBlocks[i].substring(0, indexOfSharpChar);
-				childBlock = goalBlocks[i].substring(indexOfSharpChar);
+				nodeDataText = goalBlocks[i].substring(0, indexOfAsteriskChar);
+				childBlockText = goalBlocks[i].substring(indexOfAsteriskChar);
 			}
 
-			this.parseMetaData(metaDataText, goalNode);
+			this.parseNodeData(nodeDataText, goalNode);
 
 			if(goalNode.ThisNodeId == null) {
 				goalNode.ThisNodeId = this.createNewNodeId();
 			}
 			goalNodes.push(goalNode);
 
-			if(childBlock == null) {
+			if(childBlockText == null) {
 				continue;
 			}
-			else if(splitByLines(childBlock)[0].match("Strategy") != null) {
-				this.parseStrategy(childBlock, depth, goalNode);
+			else if(splitByLines(childBlockText)[0].match("Strategy") != null) {
+				this.parseStrategy(childBlockText, depth, goalNode);
 			}
-			else if(splitByLines(childBlock)[0].match("Solution") != null) {
-				this.parseSolution(childBlock, depth, goalNode);
+			else if(splitByLines(childBlockText)[0].match("Solution") != null) {
+				this.parseSolution(childBlockText, depth, goalNode);
+			}
+			else if(splitByLines(childBlockText)[0].match("Context") != null) {
+				// TODO parse context block
 			}
 		}
 
