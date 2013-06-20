@@ -109,7 +109,27 @@ var ContextAddableNode = (function (_super) {
     __extends(ContextAddableNode, _super);
     function ContextAddableNode(NodeType, Description, MetaData, ThisNodeId) {
         _super.call(this, NodeType, Description, MetaData, ThisNodeId);
+        this.Contexts = [];
     }
+    ContextAddableNode.prototype.dumpAllChild = function (depth) {
+        var data = "";
+        for(var i = 0; i < depth; i++) {
+            data += "\t";
+        }
+        data += this.NodeType + ":" + this.ThisNodeId;
+        if(this.Contexts.length != 0) {
+            data += "(" + this.Contexts[0].ThisNodeId;
+            for(var i = 1; i < this.Contexts.length; i++) {
+                data += ", ";
+                data += this.Contexts[i].ThisNodeId;
+            }
+            data += ")";
+        }
+        console.log(data);
+        for(var i = 0; i < this.Children.length; i++) {
+            this.Children[i].dumpAllChild(depth + 1);
+        }
+    };
     return ContextAddableNode;
 })(DCaseNode);
 exports.ContextAddableNode = ContextAddableNode;

@@ -78,7 +78,6 @@ var Converter = (function () {
                 continue;
             } else if(lines[i] == "---") {
                 if(metaDataElem != null && "Type" in metaDataElem && "Visible" in metaDataElem) {
-                    console.log(metaDataElem);
                     MetaData.push(metaDataElem);
                 }
                 metaDataElem = {

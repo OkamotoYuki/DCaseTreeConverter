@@ -110,7 +110,7 @@ export class SolutionNode extends DCaseNode {
 
 }
 
-export class ContextNode extends DCaseNode { // don't care
+export class ContextNode extends DCaseNode {
 
 	constructor(Description : string, MetaData, ThisNodeId : number) {
 		super("Context", Description, MetaData, ThisNodeId);
@@ -128,10 +128,32 @@ export class RebbutalNode extends DCaseNode { // don't care
 
 export class ContextAddableNode extends DCaseNode {
 
-	Context : ContextNode; // don't care
+	Contexts : ContextNode[];
 
 	constructor(NodeType : string, Description : string, MetaData, ThisNodeId : number) {
 		super(NodeType, Description, MetaData, ThisNodeId);
+		this.Contexts = [];
+	}
+
+	dumpAllChild(depth : number) : void { // it is private method (don't use this)
+		var data : string = "";
+		for(var i : number = 0; i < depth; i++) {
+			data += "\t";
+		}
+		data += this.NodeType + ":" + this.ThisNodeId;
+		if(this.Contexts.length != 0) {
+			data += "(" + this.Contexts[0].ThisNodeId;
+			for(var i = 1; i < this.Contexts.length; i++) {
+				data += ", ";
+				data += this.Contexts[i].ThisNodeId;
+			}
+			data+= ")";
+		}
+		console.log(data); // dump this node
+
+		for(var i : number = 0; i < this.Children.length; i++) {
+			this.Children[i].dumpAllChild(depth + 1);
+		}
 	}
 
 }
