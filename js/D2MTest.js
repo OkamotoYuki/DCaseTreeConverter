@@ -1,7 +1,17 @@
 var DCaseTree = require("./DCaseTree")
 function test() {
-    var root = new DCaseTree.GoalNode("Top Goal", "hogehoge", 1);
-    var child1 = new DCaseTree.StrategyNode("First Strategy", "hogehoge", 1);
+    var root = new DCaseTree.GoalNode("Top Goal", {
+        "type": "Issue",
+        "To": "YNU",
+        "Subject": "JSSST",
+        "Visible": "True"
+    }, 1);
+    var child1 = new DCaseTree.StrategyNode("First Strategy", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "Splash",
+        "Visible": "True"
+    }, 1);
     var child2 = new DCaseTree.StrategyNode("Second Strategy", "hogehoge", 2);
     var child3 = new DCaseTree.GoalNode("Second Goal", "hogehoge", 3);
     var child4 = new DCaseTree.GoalNode("Third Goal", "hogehoge", 4);
@@ -27,3 +37,4 @@ function test() {
     root.convertAllChildNodeIntoMarkdown(0, 0);
 }
 exports.test = test;
+test();

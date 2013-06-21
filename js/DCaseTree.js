@@ -164,7 +164,7 @@ var ContextAddableNode = (function (_super) {
         }
         outputStr += asterisk + this.NodeType + " " + "NodeName(not defined)" + " " + this.Id;
         outputText(outputStr);
-        outputText(this.Description + "\n");
+        outputText(this.Description);
         outputText("---");
         for(var j = 0; j < this.MetaData.length; j++) {
             outputText(this.MetaData[j]);
@@ -180,7 +180,7 @@ var ContextAddableNode = (function (_super) {
                 outputStr = "";
                 outputStr += asterisk + this.Contexts[m].NodeType + " " + "NodeName(Undefined)" + this.Contexts[m].Id;
                 outputText(outputStr);
-                outputText(this.Contexts[m].Description + "\n");
+                outputText(this.Contexts[m].Description);
                 outputText("---");
                 for(var n = 0; n < this.Contexts[m].MetaData.length; n++) {
                     outputText(this.Contexts[m].MetaData[n]);

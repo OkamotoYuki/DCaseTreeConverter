@@ -1,10 +1,12 @@
 import DCaseTree = module("DCaseTree");
 
 export function test() : void {
-	var root : DCaseTree.GoalNode  = new DCaseTree.GoalNode("Top Goal", "hogehoge", 1);
-	var child1: DCaseTree.StrategyNode = new DCaseTree.StrategyNode("First Strategy", "hogehoge", 1);
+	var root : DCaseTree.GoalNode  = new DCaseTree.GoalNode("Top Goal",
+		{"type":"Issue", "To":"YNU", "Subject":"JSSST", "Visible":"True"} , 1);
+	var child1: DCaseTree.StrategyNode = new DCaseTree.StrategyNode("First Strategy",
+	{"type":"Means", "To":"Professor", "Source":"Splash", "Visible":"True"}, 1);
 	var child2: DCaseTree.StrategyNode = new DCaseTree.StrategyNode("Second Strategy", "hogehoge", 2);
-	var child3: DCaseTree.GoalNode = new DCaseTree.GoalNode("Second Goal", "hogehoge", 3);
+			var child3: DCaseTree.GoalNode = new DCaseTree.GoalNode("Second Goal", "hogehoge", 3);
 	var child4: DCaseTree.GoalNode = new DCaseTree.GoalNode("Third Goal", "hogehoge", 4);
 	var child5: DCaseTree.StrategyNode = new DCaseTree.StrategyNode("Third Strategy", "hogehoge", 5);
 	var child6: DCaseTree.StrategyNode = new DCaseTree.StrategyNode("Fourth Strategy", "hogehoge", 6);
@@ -34,3 +36,4 @@ export function test() : void {
 	root.dump();
 	root.convertAllChildNodeIntoMarkdown(0, 0);
 }
+test();

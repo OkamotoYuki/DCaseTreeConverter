@@ -205,7 +205,7 @@ export class ContextAddableNode extends DCaseNode {
 
 		outputStr += asterisk + this.NodeType + " " + "NodeName(not defined)" + " " + this.Id;
 		outputText(outputStr)
-		outputText(this.Description + "\n");
+		outputText(this.Description);
 		outputText("---");
 
 		for(var j : number = 0; j < this.MetaData.length; j++){ 
@@ -225,7 +225,7 @@ export class ContextAddableNode extends DCaseNode {
 					"NodeName(Undefined)" + this.Contexts[m].Id;
 
 				outputText(outputStr);
-				outputText(this.Contexts[m].Description + "\n");
+				outputText(this.Contexts[m].Description);
 				outputText("---");
 
 				for(var n:number = 0; n < this.Contexts[m].MetaData.length; n++){
