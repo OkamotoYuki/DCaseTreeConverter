@@ -144,7 +144,7 @@ export class ContextNode extends DCaseNode {
 export class RebbutalNode extends DCaseNode { // don't care
 
 	constructor(Description : string, MetaData, Id : number) {
-		super("Context", Description, MetaData, Id);
+		super("Rebbutal", Description, MetaData, Id);
 	}
 
 }

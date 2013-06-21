@@ -12,13 +12,35 @@ var Converter = (function () {
             this.nodeMap[nodeList[i]["Id"]] = nodeList[i];
         }
     };
+    Converter.prototype.parseContext = function (nodeId, parentNode) {
+        var nodeData = this.nodeMap[nodeId];
+        var NodeType = nodeData["NodeType"];
+        var Description = nodeData["Description"];
+        var Children = nodeData["Children"];
+        var MetaData = nodeData["MetaData"];
+        if(NodeType != "Context") {
+            outputError("'Contexts' field must have only context node");
+        }
+        if(Children.length > 0) {
+            outputError("context node has no 'Children'");
+        }
+        var contextNode = new DCaseTree.ContextNode(Description, MetaData, nodeId);
+        parentNode.Contexts.push(contextNode);
+        return parentNode;
+    };
     Converter.prototype.parseChild = function (nodeId, parentNode) {
         var nodeData = this.nodeMap[nodeId];
         var NodeType = nodeData["NodeType"];
         var Description = nodeData["Description"];
-        var MetaData = nodeData["MetaData"];
         var Children = nodeData["Children"];
-        var childNode = new DCaseTree.DCaseNode(NodeType, Description, MetaData, nodeId);
+        var MetaData = nodeData["MetaData"];
+        var childNode = new DCaseTree[NodeType + "Node"](Description, MetaData, nodeId);
+        if("Contexts" in nodeData) {
+            var Contexts = nodeData["Contexts"];
+            for(var i = 0; i < Contexts.length; i++) {
+                this.parseContext(Contexts[i], childNode);
+            }
+        }
         for(var i = 0; i < Children.length; i++) {
             this.parseChild(Children[i], childNode);
         }

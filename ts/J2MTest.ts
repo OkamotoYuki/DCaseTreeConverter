@@ -20,6 +20,9 @@ var test : any = {
 					3,
 					4
 				],
+				"Contexts": [
+					9
+				],
 				"Description": "Alternative",
 				"NodeType": "Strategy",
 				"Id": 2,
@@ -72,6 +75,13 @@ var test : any = {
 				"Description": "t2",
 				"NodeType": "Goal",
 				"Id": 4,
+				"MetaData" : []
+			},
+			{
+				"Children": [],
+				"Description": "C",
+				"NodeType": "Context",
+				"Id": 9,
 				"MetaData" : []
 			}
 		]

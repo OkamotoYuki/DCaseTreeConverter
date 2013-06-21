@@ -114,7 +114,7 @@ exports.ContextNode = ContextNode;
 var RebbutalNode = (function (_super) {
     __extends(RebbutalNode, _super);
     function RebbutalNode(Description, MetaData, Id) {
-        _super.call(this, "Context", Description, MetaData, Id);
+        _super.call(this, "Rebbutal", Description, MetaData, Id);
     }
     return RebbutalNode;
 })(DCaseNode);
