@@ -111,14 +111,31 @@ var Converter = (function () {
         var contextMacher = new RegExp("\\*{" + depth + "}Context", "g");
         contextMacher.exec(contextBlocks[0]);
         contextBlocks[0] = contextBlocks[0].substring(contextMacher.lastIndex);
+        var childBlockText = null;
         for(var i = 0; i < contextBlocks.length; i++) {
             var contextNode = new DCaseTree.ContextNode(null, null, null);
             var nodeDataText = contextBlocks[i];
+            if(i == contextBlocks.length - 1) {
+                var indexOfAsteriskChar = contextBlocks[i].indexOf("*");
+                if(indexOfAsteriskChar != -1) {
+                    nodeDataText = contextBlocks[i].substring(0, indexOfAsteriskChar);
+                    childBlockText = contextBlocks[i].substring(indexOfAsteriskChar);
+                }
+            }
             this.parseNodeData(nodeDataText, contextNode);
             if(contextNode.ThisNodeId == null) {
                 contextNode.ThisNodeId = this.createNewNodeId();
             }
             parentNode.Contexts.push(contextNode);
+        }
+        if(childBlockText == null) {
+            return;
+        } else if(splitByLines(childBlockText)[0].match("Goal") != null) {
+            this.parseGoal(childBlockText, depth, parentNode);
+        } else if(splitByLines(childBlockText)[0].match("Strategy") != null) {
+            this.parseStrategy(childBlockText, depth, parentNode);
+        } else if(splitByLines(childBlockText)[0].match("Solution") != null) {
+            this.parseSolution(childBlockText, depth, parentNode);
         }
     };
     Converter.prototype.parseStrategy = function (text, depth, parentNode) {

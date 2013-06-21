@@ -132,7 +132,7 @@ var ContextAddableNode = (function (_super) {
         }
         data += this.NodeType + ":" + this.ThisNodeId;
         if(this.Contexts.length != 0) {
-            data += "(" + this.Contexts[0].ThisNodeId;
+            data += " (Contexts:" + this.Contexts[0].ThisNodeId;
             for(var i = 1; i < this.Contexts.length; i++) {
                 data += ", ";
                 data += this.Contexts[i].ThisNodeId;

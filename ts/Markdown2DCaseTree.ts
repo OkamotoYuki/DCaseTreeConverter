@@ -136,10 +136,20 @@ export class Converter {
 		var contextMacher : RegExp = new RegExp("\\*{" + depth + "}Context", "g");
 		contextMacher.exec(contextBlocks[0]);
 		contextBlocks[0] = contextBlocks[0].substring(contextMacher.lastIndex);
+		var childBlockText : string = null;
 
 		for(var i : number = 0; i < contextBlocks.length; i++) {
 			var contextNode : DCaseTree.ContextNode = new DCaseTree.ContextNode(null, null, null);
 			var nodeDataText : string = contextBlocks[i];
+
+			if(i == contextBlocks.length - 1) {
+				var indexOfAsteriskChar : number = contextBlocks[i].indexOf("*");
+
+				if(indexOfAsteriskChar != -1) {
+					nodeDataText = contextBlocks[i].substring(0, indexOfAsteriskChar);
+					childBlockText = contextBlocks[i].substring(indexOfAsteriskChar);
+				}
+			}
 
 			this.parseNodeData(nodeDataText, contextNode);
 
@@ -148,6 +158,19 @@ export class Converter {
 			}
 
 			parentNode.Contexts.push(contextNode);
+		}
+
+		if(childBlockText == null) {
+			return;
+		}
+		else if(splitByLines(childBlockText)[0].match("Goal") != null) {
+			this.parseGoal(childBlockText, depth, parentNode);
+		}
+		else if(splitByLines(childBlockText)[0].match("Strategy") != null) {
+			this.parseStrategy(childBlockText, depth, parentNode);
+		}
+		else if(splitByLines(childBlockText)[0].match("Solution") != null) {
+			this.parseSolution(childBlockText, depth, parentNode);
 		}
 	}
 
