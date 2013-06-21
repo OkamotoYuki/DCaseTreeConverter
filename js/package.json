@@ -1,0 +1,19 @@
+{
+  "name": "DCaseTreeConverter",
+  "version": "0.0.1",
+  "description": "DCaseTreeConverter",
+  "main": "TestAll.js",
+  "scripts": {
+    "test": "node TestAll.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OkamotoYuki/DCaseTreeConverter.git"
+  },
+  "author": "Okamoto Yuki, Nakayama Yusuke",
+  "license": "MIT",
+  "engine": "node >= 0.8.22",
+  "dependencies": {
+      "jquery": "1.8.3"
+  }
+}
