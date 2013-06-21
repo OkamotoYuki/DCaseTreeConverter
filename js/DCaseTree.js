@@ -124,6 +124,35 @@ var ContextAddableNode = (function (_super) {
         _super.call(this, NodeType, Description, MetaData, Id);
         this.Contexts = [];
     }
+    ContextAddableNode.prototype.convertAllChildNodeIntoJson = function (jsonData) {
+        var elem = {
+        };
+        elem["NodeType"] = this.NodeType;
+        elem["Description"] = this.Description;
+        elem["Id"] = this.Id;
+        elem["MetaData"] = this.MetaData;
+        var childrenIds = [];
+        for(var i = 0; i < this.Children.length; i++) {
+            childrenIds[i] = this.Children[i].Id;
+        }
+        elem["Children"] = childrenIds;
+        jsonData.push(elem);
+        if(this.Contexts.length != 0) {
+            for(var i = 0; i < this.Contexts.length; i++) {
+                var contextElem = {
+                };
+                contextElem["NodeType"] = this.Contexts[i].NodeType;
+                contextElem["Description"] = this.Contexts[i].Description;
+                contextElem["Id"] = this.Contexts[i].Id;
+                contextElem["MetaData"] = this.Contexts[i].MetaData;
+                jsonData.push(contextElem);
+            }
+        }
+        for(var j = 0; j < this.Children.length; j++) {
+            this.Children[j].convertAllChildNodeIntoJson(jsonData);
+        }
+        return jsonData;
+    };
     ContextAddableNode.prototype.convertAllChildNodeIntoMarkdown = function (goalNum, contextsNum) {
         var outputStr = "";
         var asterisk = "";

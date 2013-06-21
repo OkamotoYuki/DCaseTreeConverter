@@ -157,12 +157,46 @@ export class ContextAddableNode extends DCaseNode {
 		this.Contexts = [];
 	}
 
+	convertAllChildNodeIntoJson(jsonData : any[]) : any[]{
+		var elem : any = {};
+		elem["NodeType"]   = this.NodeType;
+		elem["Description"]= this.Description
+		elem["Id"] = this.Id;
+		elem["MetaData"]   = this.MetaData;
+
+		var childrenIds : number[] = [];
+		for(var i : number = 0; i < this.Children.length ; i++) {
+			childrenIds[i] = this.Children[i].Id;
+		}
+		elem["Children"] = childrenIds;
+
+		jsonData.push(elem);
+
+		if(this.Contexts.length != 0){
+			for(var i: number = 0; i < this.Contexts.length; i++){
+				var contextElem: any = {};
+				contextElem["NodeType"]    = this.Contexts[i].NodeType;
+				contextElem["Description"] = this.Contexts[i].Description;
+				contextElem["Id"] = this.Contexts[i].Id;
+				contextElem["MetaData"] = this.Contexts[i].MetaData;
+
+				jsonData.push(contextElem);
+			}
+		}
+		for(var j : number = 0; j < this.Children.length ; j++){
+			this.Children[j].convertAllChildNodeIntoJson(jsonData);
+		}
+
+		return jsonData;
+	}
+
+
 	convertAllChildNodeIntoMarkdown(goalNum : number, contextsNum: number) : void {
 		var outputStr : string = "";
 		var asterisk  : string = "";
 
 		if(this.NodeType == "Goal"){
-			goalNum++;	
+			goalNum++;
 		}
 
 		for(var i : number = 0; i < goalNum; i++){
@@ -189,7 +223,7 @@ export class ContextAddableNode extends DCaseNode {
 				outputStr = "";
 				outputStr += asterisk + this.Contexts[m].NodeType + " " + 
 					"NodeName(Undefined)" + this.Contexts[m].Id;
-				
+
 				outputText(outputStr);
 				outputText(this.Contexts[m].Description + "\n");
 				outputText("---");
