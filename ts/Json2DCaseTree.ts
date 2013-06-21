@@ -67,7 +67,7 @@ export class Converter {
 		}
 	}
 
-	parseJson(jsonData : any) : DCaseTree.DCaseNode {
+	parseJson(jsonData : any) : DCaseTree.TopGoalNode {
 		var DCaseName : string = jsonData["DCaseName"];
 		var NodeCount : number = jsonData["NodeCount"];
 		var TopGoalId : number = jsonData["TopGoalId"];
@@ -75,7 +75,10 @@ export class Converter {
 
 		this.initNodeMap(NodeList);
 
-		var rootNode : DCaseTree.DCaseNode = this.parseChild(TopGoalId, null);
+		var rootNode : DCaseTree.TopGoalNode = <DCaseTree.TopGoalNode>this.parseChild(TopGoalId, null);
+		rootNode.DCaseName = DCaseName;
+		rootNode.NodeCount = NodeCount;
+		rootNode.TopGoalId = TopGoalId;
 
 		return rootNode;
 	}

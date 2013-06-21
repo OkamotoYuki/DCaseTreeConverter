@@ -14,7 +14,7 @@ export class DCaseNode {
 	MetaData : any[];
 	Children : DCaseNode[];
 
-	constructor(NodeType : string, Description : string, MetaData, Id : number) {
+	constructor(NodeType : string, Description : string, MetaData : any, Id : number) {
 		this.NodeType = NodeType;
 		this.Description = Description;
 		this.MetaData = MetaData;
@@ -127,7 +127,7 @@ export class DCaseNode {
 
 export class SolutionNode extends DCaseNode {
 
-	constructor(Description : string, MetaData, Id : number) {
+	constructor(Description : string, MetaData : any, Id : number) {
 		super("Solution", Description, MetaData, Id);
 	}
 
@@ -135,7 +135,7 @@ export class SolutionNode extends DCaseNode {
 
 export class ContextNode extends DCaseNode {
 
-	constructor(Description : string, MetaData, Id : number) {
+	constructor(Description : string, MetaData : any, Id : number) {
 		super("Context", Description, MetaData, Id);
 	}
 
@@ -143,7 +143,7 @@ export class ContextNode extends DCaseNode {
 
 export class RebbutalNode extends DCaseNode { // don't care
 
-	constructor(Description : string, MetaData, Id : number) {
+	constructor(Description : string, MetaData : any, Id : number) {
 		super("Rebbutal", Description, MetaData, Id);
 	}
 
@@ -153,7 +153,7 @@ export class ContextAddableNode extends DCaseNode {
 
 	Contexts : ContextNode[];
 
-	constructor(NodeType : string, Description : string, MetaData, Id : number) {
+	constructor(NodeType : string, Description : string, MetaData : any, Id : number) {
 		super(NodeType, Description, MetaData, Id);
 		this.Contexts = [];
 	}
@@ -183,8 +183,23 @@ export class ContextAddableNode extends DCaseNode {
 
 export class GoalNode extends ContextAddableNode {
 
-	constructor(Description : string, MetaData, Id : number) {
+	constructor(Description : string, MetaData : any, Id : number) {
 		super("Goal", Description, MetaData, Id);
+	}
+
+}
+
+export class TopGoalNode extends GoalNode {
+
+	DCaseName : string;
+	NodeCount : number;
+	TopGoalId : number;
+
+	constructor(DCaseName : string, NodeCount : number, Description : string, MetaData : any, Id : number) {
+		super(Description, MetaData, Id);
+		this.DCaseName = DCaseName;
+		this.NodeCount = NodeCount;
+		this.TopGoalId = Id;
 	}
 
 }

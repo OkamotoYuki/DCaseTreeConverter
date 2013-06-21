@@ -155,6 +155,17 @@ var GoalNode = (function (_super) {
     return GoalNode;
 })(ContextAddableNode);
 exports.GoalNode = GoalNode;
+var TopGoalNode = (function (_super) {
+    __extends(TopGoalNode, _super);
+    function TopGoalNode(DCaseName, NodeCount, Description, MetaData, Id) {
+        _super.call(this, Description, MetaData, Id);
+        this.DCaseName = DCaseName;
+        this.NodeCount = NodeCount;
+        this.TopGoalId = Id;
+    }
+    return TopGoalNode;
+})(GoalNode);
+exports.TopGoalNode = TopGoalNode;
 var StrategyNode = (function (_super) {
     __extends(StrategyNode, _super);
     function StrategyNode(Description, MetaData, Id) {

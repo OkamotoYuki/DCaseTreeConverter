@@ -58,6 +58,9 @@ var Converter = (function () {
         var NodeList = jsonData["NodeList"];
         this.initNodeMap(NodeList);
         var rootNode = this.parseChild(TopGoalId, null);
+        rootNode.DCaseName = DCaseName;
+        rootNode.NodeCount = NodeCount;
+        rootNode.TopGoalId = TopGoalId;
         return rootNode;
     };
     return Converter;

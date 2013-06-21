@@ -18,8 +18,10 @@ function isBoolean(text : string) : bool {
 
 export class Converter {
 
+	DCaseName :string;
 	usedNodeIdList : number[] = [];
 	currentNodeId : number = 0;
+	NodeCount : number = 0;
 
 	constructor() {
 	}
@@ -37,10 +39,10 @@ export class Converter {
 		var lines : string[] = splitByLines(text);
 
 		for(var i : number = 0; i < lines.length; i++) {
-			var nodeIdMacher : RegExp = /\*+.+\s.+\s/g;
-			nodeIdMacher.exec(lines[i]);
-			if(nodeIdMacher.lastIndex > 0) {
-				var nodeIdText : string = lines[i].substring(nodeIdMacher.lastIndex);
+			var nodeIdMatcher : RegExp = /\*+.+\s.+\s/g;
+			nodeIdMatcher.exec(lines[i]);
+			if(nodeIdMatcher.lastIndex > 0) {
+				var nodeIdText : string = lines[i].substring(nodeIdMatcher.lastIndex);
 				if(!isNumber(nodeIdText)) {
 					outputError("node id must be number");
 				}
@@ -53,6 +55,8 @@ export class Converter {
 	}
 
 	createNewNodeId() : number {
+		this.NodeCount += 1;
+
 		while(true) {
 			this.currentNodeId += 1;
 			if(!this.isUsedNodeId(this.currentNodeId)) {
@@ -69,13 +73,13 @@ export class Converter {
 		}
 
 		if(lines[0] != "") {
-			var nodeIdMacher : RegExp = /\s.*\s/g;
-			nodeIdMacher.exec(lines[0]);
-			if(nodeIdMacher.lastIndex <= 0) {
+			var nodeIdMatcher : RegExp = /\s.*\s/g;
+			nodeIdMatcher.exec(lines[0]);
+			if(nodeIdMatcher.lastIndex <= 0) {
 				outputError("syntax is incorrect (nodeid)");
 			}
 
-			var nodeIdText = lines[0].substring(nodeIdMacher.lastIndex);
+			var nodeIdText = lines[0].substring(nodeIdMatcher.lastIndex);
 			if(!isNumber(nodeIdText)) {
 				outputError("node id must be number");
 			}
@@ -133,9 +137,9 @@ export class Converter {
 
 		var separator : RegExp = new RegExp("\n\\*{" + depth + "}Context", "g");
 		var contextBlocks = text.split(separator);
-		var contextMacher : RegExp = new RegExp("\\*{" + depth + "}Context", "g");
-		contextMacher.exec(contextBlocks[0]);
-		contextBlocks[0] = contextBlocks[0].substring(contextMacher.lastIndex);
+		var contextMatcher : RegExp = new RegExp("\\*{" + depth + "}Context", "g");
+		contextMatcher.exec(contextBlocks[0]);
+		contextBlocks[0] = contextBlocks[0].substring(contextMatcher.lastIndex);
 		var childBlockText : string = null;
 
 		for(var i : number = 0; i < contextBlocks.length; i++) {
@@ -181,9 +185,9 @@ export class Converter {
 
 		var separator : RegExp = new RegExp("\n\\*{" + depth + "}Strategy", "g");
 		var strategyBlocks = text.split(separator);
-		var strategyMacher : RegExp = new RegExp("\\*{" + depth + "}Strategy", "g");
-		strategyMacher.exec(strategyBlocks[0]);
-		strategyBlocks[0] = strategyBlocks[0].substring(strategyMacher.lastIndex);
+		var strategyMatcher : RegExp = new RegExp("\\*{" + depth + "}Strategy", "g");
+		strategyMatcher.exec(strategyBlocks[0]);
+		strategyBlocks[0] = strategyBlocks[0].substring(strategyMatcher.lastIndex);
 
 		for(var i : number = 0; i < strategyBlocks.length; i++) {
 			var strategyNode : DCaseTree.StrategyNode = new DCaseTree.StrategyNode(null, null, null);
@@ -226,9 +230,9 @@ export class Converter {
 
 		var separator : RegExp = new RegExp("\n\\*{" + depth + "}Solution", "g");
 		var solutionBlocks = text.split(separator);
-		var solutionMacher : RegExp = new RegExp("\\*{" + depth + "}Solution", "g");
-		solutionMacher.exec(solutionBlocks[0]);
-		solutionBlocks[0] = solutionBlocks[0].substring(solutionMacher.lastIndex);
+		var solutionMatcher : RegExp = new RegExp("\\*{" + depth + "}Solution", "g");
+		solutionMatcher.exec(solutionBlocks[0]);
+		solutionBlocks[0] = solutionBlocks[0].substring(solutionMatcher.lastIndex);
 
 		for(var i : number = 0; i < solutionBlocks.length; i++) {
 			var solutionNode : DCaseTree.SolutionNode = new DCaseTree.SolutionNode(null, null, null);
@@ -251,9 +255,9 @@ export class Converter {
 
 		var separator : RegExp = new RegExp("\n\\*{" + depth + "}Goal", "g");
 		var goalBlocks = text.split(separator);
-		var goalMacher : RegExp = new RegExp("\\*{" + depth + "}Goal", "g");
-		goalMacher.exec(goalBlocks[0]);
-		goalBlocks[0] = goalBlocks[0].substring(goalMacher.lastIndex);
+		var goalMatcher : RegExp = new RegExp("\\*{" + depth + "}Goal", "g");
+		goalMatcher.exec(goalBlocks[0]);
+		goalBlocks[0] = goalBlocks[0].substring(goalMatcher.lastIndex);
 
 		for(var i : number = 0; i < goalBlocks.length; i++) {
 			var goalNode : DCaseTree.GoalNode = new DCaseTree.GoalNode(null, null, null);
@@ -303,9 +307,42 @@ export class Converter {
 		}
 	}
 
-	parseMarkdown(markdownText : string) : DCaseTree.DCaseNode {
+	parseHeader(text : string) : string {
+		var indexOfAsteriskChar : number = text.indexOf("*");
+		var headerText : string;
+		var nodeInfoText : string;
+
+		if(indexOfAsteriskChar == -1) {
+			outputError("node info must start with '*'");
+		}
+
+		headerText = text.substring(0, indexOfAsteriskChar);
+		nodeInfoText = text.substring(indexOfAsteriskChar);
+
+		var headerLines : string[] = splitByLines(headerText);
+		var DCaseNameMatcher : RegExp = /DCaseName\s*:\s*/g;
+
+		for(var i = 0; i < headerLines.length; i++) {
+			if(headerLines[i].match(DCaseNameMatcher)) {
+				DCaseNameMatcher.exec(headerLines[i]);
+				this.DCaseName = headerLines[i].substring(DCaseNameMatcher.lastIndex);
+				break;
+			}
+		}
+
+		return nodeInfoText;
+	}
+
+	parseMarkdown(markdownText : string) : DCaseTree.TopGoalNode {
 		this.initUsedNodeIdList(markdownText);
-		var rootNode : DCaseTree.DCaseNode = this.parseGoal(markdownText, 0, null);
+
+		markdownText = this.parseHeader(markdownText);
+
+		var rootNode : DCaseTree.TopGoalNode = <DCaseTree.TopGoalNode>this.parseGoal(markdownText, 0, null);
+		rootNode.DCaseName = this.DCaseName;
+		rootNode.NodeCount = this.NodeCount;
+		rootNode.TopGoalId = rootNode.Id;
+
 		return rootNode;
 	}
 

@@ -88,5 +88,5 @@ var test : any = {
 }
 
 var j2dc : Json2DCaseTree.Converter = new Json2DCaseTree.Converter();
-var root : DCaseTree.DCaseNode = j2dc.parseJson(test);
+var root : DCaseTree.TopGoalNode = j2dc.parseJson(test);
 root.dump();

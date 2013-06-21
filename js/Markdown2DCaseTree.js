@@ -15,6 +15,7 @@ var Converter = (function () {
     function Converter() {
         this.usedNodeIdList = [];
         this.currentNodeId = 0;
+        this.NodeCount = 0;
     }
     Converter.prototype.isUsedNodeId = function (nodeId) {
         for(var i = 0; i < this.usedNodeIdList.length; i++) {
@@ -27,10 +28,10 @@ var Converter = (function () {
     Converter.prototype.initUsedNodeIdList = function (text) {
         var lines = splitByLines(text);
         for(var i = 0; i < lines.length; i++) {
-            var nodeIdMacher = /\*+.+\s.+\s/g;
-            nodeIdMacher.exec(lines[i]);
-            if(nodeIdMacher.lastIndex > 0) {
-                var nodeIdText = lines[i].substring(nodeIdMacher.lastIndex);
+            var nodeIdMatcher = /\*+.+\s.+\s/g;
+            nodeIdMatcher.exec(lines[i]);
+            if(nodeIdMatcher.lastIndex > 0) {
+                var nodeIdText = lines[i].substring(nodeIdMatcher.lastIndex);
                 if(!isNumber(nodeIdText)) {
                     outputError("node id must be number");
                 }
@@ -42,6 +43,7 @@ var Converter = (function () {
         }
     };
     Converter.prototype.createNewNodeId = function () {
+        this.NodeCount += 1;
         while(true) {
             this.currentNodeId += 1;
             if(!this.isUsedNodeId(this.currentNodeId)) {
@@ -55,12 +57,12 @@ var Converter = (function () {
             outputError("node doesn't include enough data");
         }
         if(lines[0] != "") {
-            var nodeIdMacher = /\s.*\s/g;
-            nodeIdMacher.exec(lines[0]);
-            if(nodeIdMacher.lastIndex <= 0) {
+            var nodeIdMatcher = /\s.*\s/g;
+            nodeIdMatcher.exec(lines[0]);
+            if(nodeIdMatcher.lastIndex <= 0) {
                 outputError("syntax is incorrect (nodeid)");
             }
-            var nodeIdText = lines[0].substring(nodeIdMacher.lastIndex);
+            var nodeIdText = lines[0].substring(nodeIdMatcher.lastIndex);
             if(!isNumber(nodeIdText)) {
                 outputError("node id must be number");
             }
@@ -108,9 +110,9 @@ var Converter = (function () {
         }
         var separator = new RegExp("\n\\*{" + depth + "}Context", "g");
         var contextBlocks = text.split(separator);
-        var contextMacher = new RegExp("\\*{" + depth + "}Context", "g");
-        contextMacher.exec(contextBlocks[0]);
-        contextBlocks[0] = contextBlocks[0].substring(contextMacher.lastIndex);
+        var contextMatcher = new RegExp("\\*{" + depth + "}Context", "g");
+        contextMatcher.exec(contextBlocks[0]);
+        contextBlocks[0] = contextBlocks[0].substring(contextMatcher.lastIndex);
         var childBlockText = null;
         for(var i = 0; i < contextBlocks.length; i++) {
             var contextNode = new DCaseTree.ContextNode(null, null, null);
@@ -144,9 +146,9 @@ var Converter = (function () {
         }
         var separator = new RegExp("\n\\*{" + depth + "}Strategy", "g");
         var strategyBlocks = text.split(separator);
-        var strategyMacher = new RegExp("\\*{" + depth + "}Strategy", "g");
-        strategyMacher.exec(strategyBlocks[0]);
-        strategyBlocks[0] = strategyBlocks[0].substring(strategyMacher.lastIndex);
+        var strategyMatcher = new RegExp("\\*{" + depth + "}Strategy", "g");
+        strategyMatcher.exec(strategyBlocks[0]);
+        strategyBlocks[0] = strategyBlocks[0].substring(strategyMatcher.lastIndex);
         for(var i = 0; i < strategyBlocks.length; i++) {
             var strategyNode = new DCaseTree.StrategyNode(null, null, null);
             var indexOfAsteriskChar = strategyBlocks[i].indexOf("*");
@@ -179,9 +181,9 @@ var Converter = (function () {
         }
         var separator = new RegExp("\n\\*{" + depth + "}Solution", "g");
         var solutionBlocks = text.split(separator);
-        var solutionMacher = new RegExp("\\*{" + depth + "}Solution", "g");
-        solutionMacher.exec(solutionBlocks[0]);
-        solutionBlocks[0] = solutionBlocks[0].substring(solutionMacher.lastIndex);
+        var solutionMatcher = new RegExp("\\*{" + depth + "}Solution", "g");
+        solutionMatcher.exec(solutionBlocks[0]);
+        solutionBlocks[0] = solutionBlocks[0].substring(solutionMatcher.lastIndex);
         for(var i = 0; i < solutionBlocks.length; i++) {
             var solutionNode = new DCaseTree.SolutionNode(null, null, null);
             var nodeDataText = solutionBlocks[i];
@@ -197,9 +199,9 @@ var Converter = (function () {
         var goalNodes = [];
         var separator = new RegExp("\n\\*{" + depth + "}Goal", "g");
         var goalBlocks = text.split(separator);
-        var goalMacher = new RegExp("\\*{" + depth + "}Goal", "g");
-        goalMacher.exec(goalBlocks[0]);
-        goalBlocks[0] = goalBlocks[0].substring(goalMacher.lastIndex);
+        var goalMatcher = new RegExp("\\*{" + depth + "}Goal", "g");
+        goalMatcher.exec(goalBlocks[0]);
+        goalBlocks[0] = goalBlocks[0].substring(goalMatcher.lastIndex);
         for(var i = 0; i < goalBlocks.length; i++) {
             var goalNode = new DCaseTree.GoalNode(null, null, null);
             var indexOfAsteriskChar = goalBlocks[i].indexOf("*");
@@ -237,9 +239,33 @@ var Converter = (function () {
             return parentNode;
         }
     };
+    Converter.prototype.parseHeader = function (text) {
+        var indexOfAsteriskChar = text.indexOf("*");
+        var headerText;
+        var nodeInfoText;
+        if(indexOfAsteriskChar == -1) {
+            outputError("node info must start with '*'");
+        }
+        headerText = text.substring(0, indexOfAsteriskChar);
+        nodeInfoText = text.substring(indexOfAsteriskChar);
+        var headerLines = splitByLines(headerText);
+        var DCaseNameMatcher = /DCaseName\s*:\s*/g;
+        for(var i = 0; i < headerLines.length; i++) {
+            if(headerLines[i].match(DCaseNameMatcher)) {
+                DCaseNameMatcher.exec(headerLines[i]);
+                this.DCaseName = headerLines[i].substring(DCaseNameMatcher.lastIndex);
+                break;
+            }
+        }
+        return nodeInfoText;
+    };
     Converter.prototype.parseMarkdown = function (markdownText) {
         this.initUsedNodeIdList(markdownText);
+        markdownText = this.parseHeader(markdownText);
         var rootNode = this.parseGoal(markdownText, 0, null);
+        rootNode.DCaseName = this.DCaseName;
+        rootNode.NodeCount = this.NodeCount;
+        rootNode.TopGoalId = rootNode.Id;
         return rootNode;
     };
     return Converter;
