@@ -10,16 +10,20 @@ function test() {
     var child7 = new DCaseTree.GoalNode("Fourth Goal", "hogehoge", 7);
     var child8 = new DCaseTree.GoalNode("Fifth Goal", "hogehoge", 8);
     var child9 = new DCaseTree.SolutionNode("First Evidence", "hogehoge", 9);
+    var context1 = new DCaseTree.ContextNode("First Context", "wowowowow", 10);
+    var context2 = new DCaseTree.ContextNode("Second Context", "wowow1", 11);
+    root.Contexts.push(context1);
     root.Children.push(child1);
     root.Children.push(child2);
     child1.Children.push(child3);
     child2.Children.push(child4);
+    child4.Contexts.push(context2);
     child4.Children.push(child5);
     child4.Children.push(child6);
     child5.Children.push(child7);
     child6.Children.push(child8);
     child8.Children.push(child9);
     root.dump();
-    root.convertAllChildNodeIntoMarkdown(0);
+    root.convertAllChildNodeIntoMarkdown(0, 0);
 }
 exports.test = test;

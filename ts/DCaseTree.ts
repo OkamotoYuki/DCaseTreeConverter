@@ -77,20 +77,19 @@ export class DCaseNode {
 		console.log(strXml);
 	}
 
-	convertAllChildNodeIntoMarkdown(goalNum : number) : void {
+	convertAllChildNodeIntoMarkdown(goalNum : number, contextsNum: number) : void {
 		var outputStr : string = "";
-		var goalFlag : bool = false;
+		var asterisk  : string = "";
 
 		if(this.NodeType == "Goal"){
-			goalFlag  = true;
 			goalNum++;	
 		}
 
 		for(var i : number = 0; i < goalNum; i++){
-			outputStr += "*";
+			asterisk += "*";
 		}
 
-		outputStr += this.NodeType + " " + "NodeName(not defined)" + " " + this.Id;
+		outputStr += asterisk + this.NodeType + " " + "NodeName(not defined)" + " " + this.Id;
 		outputText(outputStr)
 		outputText(this.Description + "\n");
 		outputText("---");
@@ -101,7 +100,7 @@ export class DCaseNode {
 		outputText("---");
 
 		for(var k : number = 0; k < this.Children.length; k++) {
-			this.Children[k].convertAllChildNodeIntoMarkdown(goalNum);
+			this.Children[k].convertAllChildNodeIntoMarkdown(goalNum, contextsNum);
 		}
 	}
 
@@ -156,6 +155,57 @@ export class ContextAddableNode extends DCaseNode {
 	constructor(NodeType : string, Description : string, MetaData : any, Id : number) {
 		super(NodeType, Description, MetaData, Id);
 		this.Contexts = [];
+	}
+
+	convertAllChildNodeIntoMarkdown(goalNum : number, contextsNum: number) : void {
+		var outputStr : string = "";
+		var asterisk  : string = "";
+
+		if(this.NodeType == "Goal"){
+			goalNum++;	
+		}
+
+		for(var i : number = 0; i < goalNum; i++){
+			asterisk += "*";
+		}
+
+		outputStr += asterisk + this.NodeType + " " + "NodeName(not defined)" + " " + this.Id;
+		outputText(outputStr)
+		outputText(this.Description + "\n");
+		outputText("---");
+
+		for(var j : number = 0; j < this.MetaData.length; j++){ 
+			outputText(this.MetaData[j]);
+		}
+		outputText("---");
+
+		if(this.Contexts.length != 0){
+			asterisk = "";
+			var contextCount = contextsNum + 1;
+			for(var l: number = 0; l < contextCount; l++){
+				asterisk += "*";
+			}
+			for(var m: number = 0; m < this.Contexts.length; m++) {
+				outputStr = "";
+				outputStr += asterisk + this.Contexts[m].NodeType + " " + 
+					"NodeName(Undefined)" + this.Contexts[m].Id;
+				
+				outputText(outputStr);
+				outputText(this.Contexts[m].Description + "\n");
+				outputText("---");
+
+				for(var n:number = 0; n < this.Contexts[m].MetaData.length; n++){
+					outputText(this.Contexts[m].MetaData[n]);
+				}
+				contextCount ++
+				asterisk += "*";
+			}
+			contextsNum = contextCount - 1;
+		}
+
+		for(var k : number = 0; k < this.Children.length; k++) {
+			this.Children[k].convertAllChildNodeIntoMarkdown(goalNum, contextsNum);
+		}
 	}
 
 	dumpAllChild(depth : number) : void { // it is private method (don't use this)
