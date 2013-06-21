@@ -87,4 +87,4 @@ var test = {
 };
 var j2dc = new Json2DCaseTree.Converter();
 var root = j2dc.parseJson(test);
-root.convertAllChildNodeIntoMarkdown(0);
+root.convertAllChildNodeIntoMarkdown(0, 0);

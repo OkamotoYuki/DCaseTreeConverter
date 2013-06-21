@@ -90,4 +90,4 @@ var test : any = {
 var j2dc : Json2DCaseTree.Converter = new Json2DCaseTree.Converter();
 var root : DCaseTree.TopGoalNode = j2dc.parseJson(test);
 
-root.convertAllChildNodeIntoMarkdown(0);
+root.convertAllChildNodeIntoMarkdown(0,0);
