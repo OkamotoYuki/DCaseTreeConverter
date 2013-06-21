@@ -170,9 +170,9 @@ export class ContextAddableNode extends DCaseNode {
 		}
 		elem["Children"] = childrenIds;
 
-		jsonData.push(elem);
 
 		if(this.Contexts.length != 0){
+		//	var contextArray: any[] = [];
 			for(var i: number = 0; i < this.Contexts.length; i++){
 				var contextElem: any = {};
 				contextElem["NodeType"]    = this.Contexts[i].NodeType;
@@ -180,9 +180,13 @@ export class ContextAddableNode extends DCaseNode {
 				contextElem["Id"] = this.Contexts[i].Id;
 				contextElem["MetaData"] = this.Contexts[i].MetaData;
 
-				jsonData.push(contextElem);
+			//	contextArray.push(contextElem);
 			}
+			elem["Contexts"] = contextElem;
 		}
+
+		jsonData.push(elem);
+
 		for(var j : number = 0; j < this.Children.length ; j++){
 			this.Children[j].convertAllChildNodeIntoJson(jsonData);
 		}

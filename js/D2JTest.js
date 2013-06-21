@@ -12,12 +12,14 @@ function test() {
     var child9 = new DCaseTree.SolutionNode("First Evidence", "hogehoge", 9);
     var context1 = new DCaseTree.ContextNode("First Context", "wowowowow", 10);
     var context2 = new DCaseTree.ContextNode("Second Context", "wowow1", 11);
+    var context3 = new DCaseTree.ContextNode("Third Context", "wowowyeah", 12);
     root.Contexts.push(context1);
     root.Children.push(child1);
     root.Children.push(child2);
     child1.Children.push(child3);
     child2.Children.push(child4);
     child4.Contexts.push(context2);
+    child4.Contexts.push(context3);
     child4.Children.push(child5);
     child4.Children.push(child6);
     child5.Children.push(child7);
@@ -26,3 +28,4 @@ function test() {
     console.log(root.convertAllChildNodeIntoJson([]));
 }
 exports.test = test;
+test();

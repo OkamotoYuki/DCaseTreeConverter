@@ -136,7 +136,6 @@ var ContextAddableNode = (function (_super) {
             childrenIds[i] = this.Children[i].Id;
         }
         elem["Children"] = childrenIds;
-        jsonData.push(elem);
         if(this.Contexts.length != 0) {
             for(var i = 0; i < this.Contexts.length; i++) {
                 var contextElem = {
@@ -145,9 +144,10 @@ var ContextAddableNode = (function (_super) {
                 contextElem["Description"] = this.Contexts[i].Description;
                 contextElem["Id"] = this.Contexts[i].Id;
                 contextElem["MetaData"] = this.Contexts[i].MetaData;
-                jsonData.push(contextElem);
             }
+            elem["Contexts"] = contextElem;
         }
+        jsonData.push(elem);
         for(var j = 0; j < this.Children.length; j++) {
             this.Children[j].convertAllChildNodeIntoJson(jsonData);
         }
