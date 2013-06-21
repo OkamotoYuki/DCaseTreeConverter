@@ -9,7 +9,7 @@ var Converter = (function () {
     }
     Converter.prototype.initNodeMap = function (nodeList) {
         for(var i = 0; i < nodeList.length; i++) {
-            this.nodeMap[nodeList[i]["ThisNodeId"]] = nodeList[i];
+            this.nodeMap[nodeList[i]["Id"]] = nodeList[i];
         }
     };
     Converter.prototype.parseChild = function (nodeId, parentNode) {

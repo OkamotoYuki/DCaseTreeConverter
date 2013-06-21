@@ -65,7 +65,7 @@ var Converter = (function () {
                 outputError("node id must be number");
             }
             var nodeId = parseInt(nodeIdText);
-            node.ThisNodeId = nodeId;
+            node.Id = nodeId;
         }
         node.Description = lines[1];
         if(lines.length == 2) {
@@ -123,8 +123,8 @@ var Converter = (function () {
                 }
             }
             this.parseNodeData(nodeDataText, contextNode);
-            if(contextNode.ThisNodeId == null) {
-                contextNode.ThisNodeId = this.createNewNodeId();
+            if(contextNode.Id == null) {
+                contextNode.Id = this.createNewNodeId();
             }
             parentNode.Contexts.push(contextNode);
         }
@@ -160,8 +160,8 @@ var Converter = (function () {
                 childBlockText = strategyBlocks[i].substring(indexOfAsteriskChar);
             }
             this.parseNodeData(nodeDataText, strategyNode);
-            if(strategyNode.ThisNodeId == null) {
-                strategyNode.ThisNodeId = this.createNewNodeId();
+            if(strategyNode.Id == null) {
+                strategyNode.Id = this.createNewNodeId();
             }
             parentNode.Children.push(strategyNode);
             if(childBlockText != null) {
@@ -186,8 +186,8 @@ var Converter = (function () {
             var solutionNode = new DCaseTree.SolutionNode(null, null, null);
             var nodeDataText = solutionBlocks[i];
             this.parseNodeData(nodeDataText, solutionNode);
-            if(solutionNode.ThisNodeId == null) {
-                solutionNode.ThisNodeId = this.createNewNodeId();
+            if(solutionNode.Id == null) {
+                solutionNode.Id = this.createNewNodeId();
             }
             parentNode.Children.push(solutionNode);
         }
@@ -213,8 +213,8 @@ var Converter = (function () {
                 childBlockText = goalBlocks[i].substring(indexOfAsteriskChar);
             }
             this.parseNodeData(nodeDataText, goalNode);
-            if(goalNode.ThisNodeId == null) {
-                goalNode.ThisNodeId = this.createNewNodeId();
+            if(goalNode.Id == null) {
+                goalNode.Id = this.createNewNodeId();
             }
             goalNodes.push(goalNode);
             if(childBlockText == null) {

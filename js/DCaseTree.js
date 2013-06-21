@@ -8,11 +8,11 @@ function outputText(text) {
     console.log(text);
 }
 var DCaseNode = (function () {
-    function DCaseNode(NodeType, Description, MetaData, ThisNodeId) {
+    function DCaseNode(NodeType, Description, MetaData, Id) {
         this.NodeType = NodeType;
         this.Description = Description;
         this.MetaData = MetaData;
-        this.ThisNodeId = ThisNodeId;
+        this.Id = Id;
         this.Children = [];
     }
     DCaseNode.prototype.convertAllChildNodeIntoJson = function (jsonData) {
@@ -20,11 +20,11 @@ var DCaseNode = (function () {
         };
         elem["NodeType"] = this.NodeType;
         elem["Description"] = this.Description;
-        elem["ThisNodeId"] = this.ThisNodeId;
+        elem["Id"] = this.Id;
         elem["MetaData"] = this.MetaData;
         var childrenIds = [];
         for(var i = 0; i < this.Children.length; i++) {
-            childrenIds[i] = this.Children[i].ThisNodeId;
+            childrenIds[i] = this.Children[i].Id;
         }
         elem["Children"] = childrenIds;
         jsonData.push(elem);
@@ -37,7 +37,7 @@ var DCaseNode = (function () {
         var $dcaseObj = $("dcase:Argument");
         var linkNum = 1;
         var $nodeObj = $("rootBasicnode");
-        var nodeId = this.ThisNodeId.toString();
+        var nodeId = this.Id.toString();
         $nodeObj.attr("xsi:type", "dcase:" + this.NodeType);
         $nodeObj.attr("id", nodeId);
         $nodeObj.attr("name", "Undefined");
@@ -45,9 +45,9 @@ var DCaseNode = (function () {
         for(var i = 0; i < this.Children.length; i++) {
             var $linkObj = $("rootBasicLink");
             $linkObj.attr("xsi:type", "dcase:link");
-            $linkObj.attr("id", nodeId + "-" + this.Children[i].ThisNodeId.toString());
+            $linkObj.attr("id", nodeId + "-" + this.Children[i].Id.toString());
             $linkObj.attr("source", nodeId);
-            $linkObj.attr("target", this.Children[i].ThisNodeId.toString());
+            $linkObj.attr("target", this.Children[i].Id.toString());
             $linkObj.attr("name", "Link_" + linkNum.toString());
             linkNum++;
             $linkObj.appendTo($dcaseObj);
@@ -66,7 +66,7 @@ var DCaseNode = (function () {
         for(var i = 0; i < goalNum; i++) {
             outputStr += "*";
         }
-        outputStr += this.NodeType + " " + "NodeName(not defined)" + " " + this.ThisNodeId;
+        outputStr += this.NodeType + " " + "NodeName(not defined)" + " " + this.Id;
         outputText(outputStr);
         outputText(this.Description + "\n");
         outputText("---");
@@ -86,7 +86,7 @@ var DCaseNode = (function () {
         for(var i = 0; i < depth; i++) {
             data += "\t";
         }
-        data += this.NodeType + ":" + this.ThisNodeId;
+        data += this.NodeType + ":" + this.Id;
         console.log(data);
         for(var i = 0; i < this.Children.length; i++) {
             this.Children[i].dumpAllChild(depth + 1);
@@ -97,32 +97,32 @@ var DCaseNode = (function () {
 exports.DCaseNode = DCaseNode;
 var SolutionNode = (function (_super) {
     __extends(SolutionNode, _super);
-    function SolutionNode(Description, MetaData, ThisNodeId) {
-        _super.call(this, "Solution", Description, MetaData, ThisNodeId);
+    function SolutionNode(Description, MetaData, Id) {
+        _super.call(this, "Solution", Description, MetaData, Id);
     }
     return SolutionNode;
 })(DCaseNode);
 exports.SolutionNode = SolutionNode;
 var ContextNode = (function (_super) {
     __extends(ContextNode, _super);
-    function ContextNode(Description, MetaData, ThisNodeId) {
-        _super.call(this, "Context", Description, MetaData, ThisNodeId);
+    function ContextNode(Description, MetaData, Id) {
+        _super.call(this, "Context", Description, MetaData, Id);
     }
     return ContextNode;
 })(DCaseNode);
 exports.ContextNode = ContextNode;
 var RebbutalNode = (function (_super) {
     __extends(RebbutalNode, _super);
-    function RebbutalNode(Description, MetaData, ThisNodeId) {
-        _super.call(this, "Context", Description, MetaData, ThisNodeId);
+    function RebbutalNode(Description, MetaData, Id) {
+        _super.call(this, "Context", Description, MetaData, Id);
     }
     return RebbutalNode;
 })(DCaseNode);
 exports.RebbutalNode = RebbutalNode;
 var ContextAddableNode = (function (_super) {
     __extends(ContextAddableNode, _super);
-    function ContextAddableNode(NodeType, Description, MetaData, ThisNodeId) {
-        _super.call(this, NodeType, Description, MetaData, ThisNodeId);
+    function ContextAddableNode(NodeType, Description, MetaData, Id) {
+        _super.call(this, NodeType, Description, MetaData, Id);
         this.Contexts = [];
     }
     ContextAddableNode.prototype.dumpAllChild = function (depth) {
@@ -130,12 +130,12 @@ var ContextAddableNode = (function (_super) {
         for(var i = 0; i < depth; i++) {
             data += "\t";
         }
-        data += this.NodeType + ":" + this.ThisNodeId;
+        data += this.NodeType + ":" + this.Id;
         if(this.Contexts.length != 0) {
-            data += " (Contexts:" + this.Contexts[0].ThisNodeId;
+            data += " (Contexts:" + this.Contexts[0].Id;
             for(var i = 1; i < this.Contexts.length; i++) {
                 data += ", ";
-                data += this.Contexts[i].ThisNodeId;
+                data += this.Contexts[i].Id;
             }
             data += ")";
         }
@@ -149,16 +149,16 @@ var ContextAddableNode = (function (_super) {
 exports.ContextAddableNode = ContextAddableNode;
 var GoalNode = (function (_super) {
     __extends(GoalNode, _super);
-    function GoalNode(Description, MetaData, ThisNodeId) {
-        _super.call(this, "Goal", Description, MetaData, ThisNodeId);
+    function GoalNode(Description, MetaData, Id) {
+        _super.call(this, "Goal", Description, MetaData, Id);
     }
     return GoalNode;
 })(ContextAddableNode);
 exports.GoalNode = GoalNode;
 var StrategyNode = (function (_super) {
     __extends(StrategyNode, _super);
-    function StrategyNode(Description, MetaData, ThisNodeId) {
-        _super.call(this, "Strategy", Description, MetaData, ThisNodeId);
+    function StrategyNode(Description, MetaData, Id) {
+        _super.call(this, "Strategy", Description, MetaData, Id);
     }
     return StrategyNode;
 })(ContextAddableNode);

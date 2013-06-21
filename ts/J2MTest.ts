@@ -12,7 +12,7 @@ var test : any = {
 				],
 				"Description": "G",
 				"NodeType": "Goal",
-				"ThisNodeId": 1,
+				"Id": 1,
 				"MetaData" : []
 			},
 			{
@@ -22,7 +22,7 @@ var test : any = {
 				],
 				"Description": "Alternative",
 				"NodeType": "Strategy",
-				"ThisNodeId": 2,
+				"Id": 2,
 				"MetaData" : []
 			},
 			{
@@ -31,7 +31,7 @@ var test : any = {
 				],
 				"Description": "G",
 				"NodeType": "Goal",
-				"ThisNodeId": 3,
+				"Id": 3,
 				"MetaData" : []
 			},
 			{
@@ -41,14 +41,14 @@ var test : any = {
 				],
 				"Description": "s",
 				"NodeType": "Strategy",
-				"ThisNodeId": 5,
+				"Id": 5,
 				"MetaData" : []
 			},
 			{
 				"Children": [],
 				"Description": "t1",
 				"NodeType": "Goal",
-				"ThisNodeId": 6,
+				"Id": 6,
 				"MetaData" : []
 			},
 			{
@@ -57,21 +57,21 @@ var test : any = {
 				],
 				"Description": "D-script",
 				"NodeType": "Goal",
-				"ThisNodeId": 7,
+				"Id": 7,
 				"MetaData" : []
 			},
 			{
 				"Children": [],
 				"Description": "x",
 				"NodeType": "Solution",
-				"ThisNodeId": 8,
+				"Id": 8,
 				"MetaData" : []
 			},
 			{
 				"Children": [],
 				"Description": "t2",
 				"NodeType": "Goal",
-				"ThisNodeId": 4,
+				"Id": 4,
 				"MetaData" : []
 			}
 		]

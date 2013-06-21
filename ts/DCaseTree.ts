@@ -10,15 +10,15 @@ export class DCaseNode {
 
 	NodeType : string;
 	Description : string;
-	ThisNodeId : number;
+	Id : number;
 	MetaData : any[];
 	Children : DCaseNode[];
 
-	constructor(NodeType : string, Description : string, MetaData, ThisNodeId : number) {
+	constructor(NodeType : string, Description : string, MetaData, Id : number) {
 		this.NodeType = NodeType;
 		this.Description = Description;
 		this.MetaData = MetaData;
-		this.ThisNodeId = ThisNodeId;
+		this.Id = Id;
 		this.Children = [];
 	}
 
@@ -26,12 +26,12 @@ export class DCaseNode {
 		var elem : any = {};
 		elem["NodeType"]   = this.NodeType;
 		elem["Description"]= this.Description
-		elem["ThisNodeId"] = this.ThisNodeId;
+		elem["Id"] = this.Id;
 		elem["MetaData"]   = this.MetaData;
 
 		var childrenIds : number[] = [];
 		for(var i : number = 0; i < this.Children.length ; i++) {
-			childrenIds[i] = this.Children[i].ThisNodeId;
+			childrenIds[i] = this.Children[i].Id;
 		}
 		elem["Children"] = childrenIds;
 
@@ -48,7 +48,7 @@ export class DCaseNode {
 	var $dcaseObj : JQuery = $("dcase:Argument");
 		var linkNum: number = 1;
 		var $nodeObj : JQuery = $("rootBasicnode");
-		var nodeId : string   = this.ThisNodeId.toString();
+		var nodeId : string   = this.Id.toString();
 		$nodeObj.attr("xsi:type", "dcase:"+ this.NodeType);
 		$nodeObj.attr("id", nodeId);
 	//	if(this.NodeName == undefined){
@@ -61,9 +61,9 @@ export class DCaseNode {
 		for(var i = 0; i < this.Children.length; i ++){
 			var $linkObj : JQuery = $("rootBasicLink");
 			$linkObj.attr("xsi:type", "dcase:link");
-			$linkObj.attr("id",  nodeId + "-" + this.Children[i].ThisNodeId.toString());
+			$linkObj.attr("id",  nodeId + "-" + this.Children[i].Id.toString());
 			$linkObj.attr("source", nodeId);
-			$linkObj.attr("target", this.Children[i].ThisNodeId.toString());
+			$linkObj.attr("target", this.Children[i].Id.toString());
 			$linkObj.attr("name", "Link_" + linkNum.toString());
 
 			linkNum++;
@@ -90,7 +90,7 @@ export class DCaseNode {
 			outputStr += "*";
 		}
 
-		outputStr += this.NodeType + " " + "NodeName(not defined)" + " " + this.ThisNodeId;
+		outputStr += this.NodeType + " " + "NodeName(not defined)" + " " + this.Id;
 		outputText(outputStr)
 		outputText(this.Description + "\n");
 		outputText("---");
@@ -115,7 +115,7 @@ export class DCaseNode {
 		for(var i : number = 0; i < depth; i++) {
 			data += "\t";
 		}
-		data += this.NodeType + ":" + this.ThisNodeId;
+		data += this.NodeType + ":" + this.Id;
 		console.log(data); // dump this node
 
 		for(var i : number = 0; i < this.Children.length; i++) {
@@ -127,24 +127,24 @@ export class DCaseNode {
 
 export class SolutionNode extends DCaseNode {
 
-	constructor(Description : string, MetaData, ThisNodeId : number) {
-		super("Solution", Description, MetaData, ThisNodeId);
+	constructor(Description : string, MetaData, Id : number) {
+		super("Solution", Description, MetaData, Id);
 	}
 
 }
 
 export class ContextNode extends DCaseNode {
 
-	constructor(Description : string, MetaData, ThisNodeId : number) {
-		super("Context", Description, MetaData, ThisNodeId);
+	constructor(Description : string, MetaData, Id : number) {
+		super("Context", Description, MetaData, Id);
 	}
 
 }
 
 export class RebbutalNode extends DCaseNode { // don't care
 
-	constructor(Description : string, MetaData, ThisNodeId : number) {
-		super("Context", Description, MetaData, ThisNodeId);
+	constructor(Description : string, MetaData, Id : number) {
+		super("Context", Description, MetaData, Id);
 	}
 
 }
@@ -153,8 +153,8 @@ export class ContextAddableNode extends DCaseNode {
 
 	Contexts : ContextNode[];
 
-	constructor(NodeType : string, Description : string, MetaData, ThisNodeId : number) {
-		super(NodeType, Description, MetaData, ThisNodeId);
+	constructor(NodeType : string, Description : string, MetaData, Id : number) {
+		super(NodeType, Description, MetaData, Id);
 		this.Contexts = [];
 	}
 
@@ -163,12 +163,12 @@ export class ContextAddableNode extends DCaseNode {
 		for(var i : number = 0; i < depth; i++) {
 			data += "\t";
 		}
-		data += this.NodeType + ":" + this.ThisNodeId;
+		data += this.NodeType + ":" + this.Id;
 		if(this.Contexts.length != 0) {
-			data += " (Contexts:" + this.Contexts[0].ThisNodeId;
+			data += " (Contexts:" + this.Contexts[0].Id;
 			for(var i = 1; i < this.Contexts.length; i++) {
 				data += ", ";
-				data += this.Contexts[i].ThisNodeId;
+				data += this.Contexts[i].Id;
 			}
 			data+= ")";
 		}
@@ -183,16 +183,16 @@ export class ContextAddableNode extends DCaseNode {
 
 export class GoalNode extends ContextAddableNode {
 
-	constructor(Description : string, MetaData, ThisNodeId : number) {
-		super("Goal", Description, MetaData, ThisNodeId);
+	constructor(Description : string, MetaData, Id : number) {
+		super("Goal", Description, MetaData, Id);
 	}
 
 }
 
 export class StrategyNode extends ContextAddableNode {
 
-	constructor(Description : string, MetaData, ThisNodeId : number) {
-		super("Strategy", Description, MetaData, ThisNodeId);
+	constructor(Description : string, MetaData, Id : number) {
+		super("Strategy", Description, MetaData, Id);
 	}
 
 }

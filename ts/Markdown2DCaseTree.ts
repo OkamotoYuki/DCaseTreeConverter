@@ -80,7 +80,7 @@ export class Converter {
 				outputError("node id must be number");
 			}
 			var nodeId : number = parseInt(nodeIdText);
-			node.ThisNodeId = nodeId;
+			node.Id = nodeId;
 		}
 		node.Description = lines[1];
 
@@ -153,8 +153,8 @@ export class Converter {
 
 			this.parseNodeData(nodeDataText, contextNode);
 
-			if(contextNode.ThisNodeId == null) {
-				contextNode.ThisNodeId = this.createNewNodeId();
+			if(contextNode.Id == null) {
+				contextNode.Id = this.createNewNodeId();
 			}
 
 			parentNode.Contexts.push(contextNode);
@@ -202,8 +202,8 @@ export class Converter {
 
 			this.parseNodeData(nodeDataText, strategyNode);
 
-			if(strategyNode.ThisNodeId == null) {
-				strategyNode.ThisNodeId = this.createNewNodeId();
+			if(strategyNode.Id == null) {
+				strategyNode.Id = this.createNewNodeId();
 			}
 
 			parentNode.Children.push(strategyNode);
@@ -236,8 +236,8 @@ export class Converter {
 
 			this.parseNodeData(nodeDataText, solutionNode);
 
-			if(solutionNode.ThisNodeId == null) {
-				solutionNode.ThisNodeId = this.createNewNodeId();
+			if(solutionNode.Id == null) {
+				solutionNode.Id = this.createNewNodeId();
 			}
 
 			parentNode.Children.push(solutionNode);
@@ -272,8 +272,8 @@ export class Converter {
 
 			this.parseNodeData(nodeDataText, goalNode);
 
-			if(goalNode.ThisNodeId == null) {
-				goalNode.ThisNodeId = this.createNewNodeId();
+			if(goalNode.Id == null) {
+				goalNode.Id = this.createNewNodeId();
 			}
 			goalNodes.push(goalNode);
 

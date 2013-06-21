@@ -13,7 +13,7 @@ export class Converter {
 
 	initNodeMap(nodeList : any[]) : void {
 		for(var i : number = 0; i < nodeList.length; i++) {
-			this.nodeMap[nodeList[i]["ThisNodeId"]] = nodeList[i];
+			this.nodeMap[nodeList[i]["Id"]] = nodeList[i];
 		}
 	}
 
