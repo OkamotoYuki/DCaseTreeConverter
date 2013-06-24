@@ -92,3 +92,4 @@ export function test() : void {
 	var root : DCaseTree.TopGoalNode = j2dc.parseJson(test);
 	root.dump();
 }
+test();

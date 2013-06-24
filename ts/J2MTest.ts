@@ -93,3 +93,4 @@ export function test() : void {
 
 	root.convertAllChildNodeIntoMarkdown(0, 0);
 }
+test();

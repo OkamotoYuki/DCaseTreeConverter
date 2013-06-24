@@ -6,3 +6,4 @@ function test() {
     root.dump();
 }
 exports.test = test;
+test();

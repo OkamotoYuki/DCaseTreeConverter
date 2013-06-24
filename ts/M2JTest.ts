@@ -9,3 +9,4 @@ export function test() : void {
 
 	console.log(root.convertAllChildNodeIntoJson([]));
 }
+test();
