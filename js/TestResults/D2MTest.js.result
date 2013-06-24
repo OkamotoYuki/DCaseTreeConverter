@@ -1,22 +1,17 @@
-Goal:1 (Contexts:10)
-	Strategy:1
-		Goal:3
-	Strategy:2
-		Goal:4 (Contexts:11)
-			Strategy:5
-				Goal:7
-			Strategy:6
-				Goal:8
-					Solution:9
 DCaseName: Sample DCase
 
 *Goal NodeName(not defined) 1
 Top Goal
 ---
-type:Issue
-To:YNU
-Subject:JSSST
-Visible:True
+type: Issue
+To: YNU
+Subject: JSSST
+Visible: True
+---
+type: Issue
+To: YNU
+Subject: JSSST
+Visible: True
 ---
 *Context NodeName(Undefined)10
 First Context
@@ -61,10 +56,10 @@ Visible: False
 **Context NodeName(Undefined)11
 Second Context
 ---
-type:Means
-To:Professor
-Source:Splash
-Visible:False
+type: Means
+To: Professor
+Source: Splash
+Visible: False
 ---
 **Strategy NodeName(not defined) 5
 Third Strategy

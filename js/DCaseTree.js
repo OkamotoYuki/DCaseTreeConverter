@@ -68,9 +68,21 @@ var DCaseNode = (function () {
         outputStr += asterisk + this.NodeType + " " + "NodeName(not defined)" + " " + this.Id;
         outputText(outputStr);
         outputText(this.Description);
-        outputText("---");
-        for(var metaName in this.MetaData) {
-            outputText(metaName + ": " + this.MetaData[metaName]);
+        if(this.MetaData.length == 0) {
+            outputText("---");
+        } else if(this.MetaData.length > 1) {
+            for(var j = 0; j < this.MetaData.length; j++) {
+                var keyString = Object.keys(this.MetaData[j]);
+                outputText("---");
+                for(var keyName in this.MetaData[j]) {
+                    outputText(keyName + ": " + this.MetaData[j][keyName]);
+                }
+            }
+        } else {
+            outputText("---");
+            for(var keyName in this.MetaData) {
+                outputText(keyName + ": " + this.MetaData[keyName]);
+            }
         }
         outputText("---");
         for(var k = 0; k < this.Children.length; k++) {
@@ -137,18 +149,11 @@ var ContextAddableNode = (function (_super) {
         }
         elem["Children"] = childrenIds;
         if(this.Contexts.length != 0) {
-            var contextArray = [];
+            var contextId = [];
             for(var i = 0; i < this.Contexts.length; i++) {
-                var contextElem = {
-                };
-                contextElem["NodeType"] = this.Contexts[i].NodeType;
-                contextElem["Description"] = this.Contexts[i].Description;
-                contextElem["Id"] = this.Contexts[i].Id;
-                contextElem["MetaData"] = this.Contexts[i].MetaData;
-                contextArray.push(contextElem);
-                console.log("ContextArray = " + contextArray);
+                contextId.push(this.Contexts[i].Id);
             }
-            elem["Contexts"] = contextArray;
+            elem["Contexts"] = contextId;
         }
         jsonData.push(elem);
         for(var j = 0; j < this.Children.length; j++) {
@@ -168,9 +173,21 @@ var ContextAddableNode = (function (_super) {
         outputStr += asterisk + this.NodeType + " " + "NodeName(not defined)" + " " + this.Id;
         outputText(outputStr);
         outputText(this.Description);
-        outputText("---");
-        for(var metaName in this.MetaData) {
-            outputText(metaName + ": " + this.MetaData[metaName]);
+        if(this.MetaData.length == 0) {
+            outputText("---");
+        } else if(this.MetaData.length > 1) {
+            for(var j = 0; j < this.MetaData.length; j++) {
+                var keyString = Object.keys(this.MetaData[j]);
+                outputText("---");
+                for(var keyName in this.MetaData[j]) {
+                    outputText(keyName + ": " + this.MetaData[j][keyName]);
+                }
+            }
+        } else {
+            outputText("---");
+            for(var keyName in this.MetaData) {
+                outputText(keyName + ": " + this.MetaData[keyName]);
+            }
         }
         outputText("---");
         if(this.Contexts.length != 0) {
@@ -179,9 +196,21 @@ var ContextAddableNode = (function (_super) {
                 outputStr += asterisk + this.Contexts[m].NodeType + " " + "NodeName(Undefined)" + this.Contexts[m].Id;
                 outputText(outputStr);
                 outputText(this.Contexts[m].Description);
-                outputText("---");
-                for(var metaName in this.Contexts[m].MetaData) {
-                    outputText(metaName + ":" + this.Contexts[m].MetaData[metaName]);
+                if(this.Contexts[m].MetaData.length == 0) {
+                    outputText("---");
+                } else if(this.Contexts[m].MetaData.length > 1) {
+                    for(var j = 0; j < this.Contexts[m].MetaData.length; j++) {
+                        var keyString = Object.keys(this.Contexts[m].MetaData[j]);
+                        outputText("---");
+                        for(var keyName in this.Contexts[m].MetaData[j]) {
+                            outputText(keyName + ": " + this.Contexts[m].MetaData[j][keyName]);
+                        }
+                    }
+                } else {
+                    outputText("---");
+                    for(var keyName in this.Contexts[m].MetaData) {
+                        outputText(keyName + ": " + this.Contexts[m].MetaData[keyName]);
+                    }
                 }
                 outputText("---");
             }
@@ -241,9 +270,21 @@ var TopGoalNode = (function (_super) {
         outputStr += asterisk + this.NodeType + " " + "NodeName(not defined)" + " " + this.TopGoalId;
         outputText(outputStr);
         outputText(this.Description);
-        outputText("---");
-        for(var metaName in this.MetaData) {
-            outputText(metaName + ":" + this.MetaData[metaName]);
+        if(this.MetaData.length == 0) {
+            outputText("---");
+        } else if(this.MetaData.length > 1) {
+            for(var j = 0; j < this.MetaData.length; j++) {
+                var keyString = Object.keys(this.MetaData[j]);
+                outputText("---");
+                for(var keyName in this.MetaData[j]) {
+                    outputText(keyName + ": " + this.MetaData[j][keyName]);
+                }
+            }
+        } else {
+            outputText("---");
+            for(var keyName in this.MetaData) {
+                outputText(keyName + ": " + this.MetaData[keyName]);
+            }
         }
         outputText("---");
         if(this.Contexts.length != 0) {
@@ -252,9 +293,21 @@ var TopGoalNode = (function (_super) {
                 outputStr += asterisk + this.Contexts[m].NodeType + " " + "NodeName(Undefined)" + this.Contexts[m].Id;
                 outputText(outputStr);
                 outputText(this.Contexts[m].Description);
-                outputText("---");
-                for(var metaName in this.Contexts[m].MetaData) {
-                    outputText(metaName + ": " + this.Contexts[m].MetaData[metaName]);
+                if(this.Contexts[m].MetaData.length == 0) {
+                    outputText("---");
+                } else if(this.Contexts[m].MetaData.length > 1) {
+                    for(var j = 0; j < this.Contexts[m].MetaData.length; j++) {
+                        var keyString = Object.keys(this.Contexts[m].MetaData[j]);
+                        outputText("---");
+                        for(var keyName in this.Contexts[m].MetaData[j]) {
+                            outputText(keyName + ": " + this.Contexts[m].MetaData[j][keyName]);
+                        }
+                    }
+                } else {
+                    outputText("---");
+                    for(var keyName in this.Contexts[m].MetaData) {
+                        outputText(keyName + ": " + this.Contexts[m].MetaData[keyName]);
+                    }
                 }
                 outputText("---");
             }

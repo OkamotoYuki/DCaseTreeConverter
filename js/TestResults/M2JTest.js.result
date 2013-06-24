@@ -1,4 +1,3 @@
-ContextArray = [object Object]
 [ { NodeType: 'Goal',
     Description: 'G',
     Id: 4,
@@ -9,7 +8,7 @@ ContextArray = [object Object]
     Id: 1,
     MetaData: [ [Object] ],
     Children: [ 3, 9 ],
-    Contexts: [ [Object] ] },
+    Contexts: [ 2 ] },
   { NodeType: 'Goal',
     Description: 'G',
     Id: 3,

@@ -2,7 +2,8 @@ import DCaseTree = module("DCaseTree");
 
 export function test() : void {
 	var root : DCaseTree.TopGoalNode  = new DCaseTree.TopGoalNode("Sample DCase",11,"Top Goal",
-	{"type":"Issue", "To":"YNU", "Subject":"JSSST", "Visible":"True"} , 1);
+	[{"type":"Issue", "To":"YNU", "Subject":"JSSST", "Visible":"True"},
+	 {"type":"Issue", "To":"YNU", "Subject":"JSSST", "Visible":"True"}], 1);
 	var child1: DCaseTree.StrategyNode = new DCaseTree.StrategyNode("First Strategy",
 	{"type":"Means", "To":"Professor", "Source":"Splash", "Visible":"True"}, 1);
 	var child2: DCaseTree.StrategyNode = new DCaseTree.StrategyNode("Second Strategy",
@@ -46,7 +47,6 @@ export function test() : void {
 
 	child8.Children.push(child9);
 
-	root.dump();
 	root.convertAllChildNodeIntoMarkdown(0);
 }
 test();
