@@ -1,18 +1,83 @@
 var DCaseTree = require("./DCaseTree")
 function test() {
-    var root = new DCaseTree.GoalNode("Top Goal", "hogehoge", 1);
-    var child1 = new DCaseTree.StrategyNode("First Strategy", "hogehoge", 1);
-    var child2 = new DCaseTree.StrategyNode("Second Strategy", "hogehoge", 2);
-    var child3 = new DCaseTree.GoalNode("Second Goal", "hogehoge", 3);
-    var child4 = new DCaseTree.GoalNode("Third Goal", "hogehoge", 4);
-    var child5 = new DCaseTree.StrategyNode("Third Strategy", "hogehoge", 5);
-    var child6 = new DCaseTree.StrategyNode("Fourth Strategy", "hogehoge", 6);
-    var child7 = new DCaseTree.GoalNode("Fourth Goal", "hogehoge", 7);
-    var child8 = new DCaseTree.GoalNode("Fifth Goal", "hogehoge", 8);
-    var child9 = new DCaseTree.SolutionNode("First Evidence", "hogehoge", 9);
-    var context1 = new DCaseTree.ContextNode("First Context", "wowowowow", 10);
-    var context2 = new DCaseTree.ContextNode("Second Context", "wowow1", 11);
-    var context3 = new DCaseTree.ContextNode("Third Context", "wowowyeah", 12);
+    var root = new DCaseTree.TopGoalNode("Sample DCase", 11, "Top Goal", {
+        "type": "Issue",
+        "To": "YNU",
+        "Subject": "JSSST",
+        "Visible": "True"
+    }, 1);
+    var child1 = new DCaseTree.StrategyNode("First Strategy", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "Splash",
+        "Visible": "True"
+    }, 1);
+    var child2 = new DCaseTree.StrategyNode("Second Strategy", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "Splash",
+        "Visible": "True"
+    }, 2);
+    var child3 = new DCaseTree.GoalNode("Second Goal", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "POPL",
+        "Visible": "False"
+    }, 3);
+    var child4 = new DCaseTree.GoalNode("Third Goal", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "Splash",
+        "Visible": "False"
+    }, 4);
+    var child5 = new DCaseTree.StrategyNode("Third Strategy", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "Splash",
+        "Visible": "False"
+    }, 5);
+    var child6 = new DCaseTree.StrategyNode("Fourth Strategy", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "Splash",
+        "Visible": "True"
+    }, 6);
+    var child7 = new DCaseTree.GoalNode("Fourth Goal", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "Splash",
+        "Visible": "True"
+    }, 7);
+    var child8 = new DCaseTree.GoalNode("Fifth Goal", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "Splash",
+        "Visible": "True"
+    }, 8);
+    var child9 = new DCaseTree.SolutionNode("First Solution", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "Splash",
+        "Visible": "True"
+    }, 9);
+    var context1 = new DCaseTree.ContextNode("First Context", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "Splash",
+        "Visible": "True"
+    }, 10);
+    var context2 = new DCaseTree.ContextNode("Second Context", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "Splash",
+        "Visible": "False"
+    }, 11);
+    var context3 = new DCaseTree.ContextNode("Third Context", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "Splash",
+        "Visible": "False"
+    }, 12);
     root.Contexts.push(context1);
     root.Children.push(child1);
     root.Children.push(child2);
