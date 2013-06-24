@@ -21,12 +21,20 @@ var DCaseNode = (function () {
         elem["NodeType"] = this.NodeType;
         elem["Description"] = this.Description;
         elem["Id"] = this.Id;
-        elem["MetaData"] = this.MetaData;
         var childrenIds = [];
         for(var i = 0; i < this.Children.length; i++) {
             childrenIds[i] = this.Children[i].Id;
         }
         elem["Children"] = childrenIds;
+        if(this.MetaData.length > 1) {
+            var metaArray = [];
+            for(var h = 0; h < this.MetaData.length; h++) {
+                metaArray.push(this.MetaData[h]);
+            }
+            elem["MetaData"] = metaArray;
+        } else {
+            elem["MetaData"] = this.MetaData;
+        }
         jsonData.push(elem);
         for(var j = 0; j < this.Children.length; j++) {
             this.Children[j].convertAllChildNodeIntoJson(jsonData);
@@ -154,12 +162,33 @@ var ContextAddableNode = (function (_super) {
             }
             elem["Contexts"] = contextId;
         }
-        var MetaArray = [];
-        for(var h = 0; h < this.MetaData.length; h++) {
-            MetaArray[h] = this.MetaData[h];
+        if(this.MetaData.length > 1) {
+            var MetaArray = [];
+            for(var h = 0; h < this.MetaData.length; h++) {
+                MetaArray[h] = this.MetaData[h];
+            }
+            elem["MetaData"] = MetaArray;
+        } else {
+            elem["MetaData"] = this.MetaData;
         }
-        elem["MetaData"] = MetaArray;
         jsonData.push(elem);
+        if(this.Contexts.length != 0) {
+            for(var k = 0; k < this.Contexts.length; k++) {
+                elem["NodeType"] = this.Contexts[k].NodeType;
+                elem["Description"] = this.Contexts[k].Description;
+                elem["Id"] = this.Contexts[k].Id;
+                if(this.Contexts[k].MetaData.length > 1) {
+                    var MetaArray = [];
+                    for(var h = 0; h < this.Contexts[k].MetaData.length; h++) {
+                        MetaArray[h] = this.Contexts[k].MetaData[h];
+                    }
+                    elem["MetaData"] = MetaArray;
+                } else {
+                    elem["MetaData"] = this.Contexts[k].MetaData;
+                }
+            }
+            jsonData.push(elem);
+        }
         for(var j = 0; j < this.Children.length; j++) {
             this.Children[j].convertAllChildNodeIntoJson(jsonData);
         }
@@ -262,15 +291,16 @@ var TopGoalNode = (function (_super) {
         this.TopGoalId = Id;
     }
     TopGoalNode.prototype.convertAllChildNodeIntoJson = function (jsonData) {
-        jsonData["DCaseName"] = this.DCaseName;
-        jsonData["NodeCount"] = this.NodeCount;
-        jsonData["TopGoalId"] = this.TopGoalId;
+        var jsonOutput = [];
+        jsonOutput["DCaseName"] = this.DCaseName;
+        jsonOutput["NodeCount"] = this.NodeCount;
+        jsonOutput["TopGoalId"] = this.TopGoalId;
+        jsonOutput["NodeList"] = jsonData;
         var elem = {
         };
         elem["NodeType"] = this.NodeType;
         elem["Description"] = this.Description;
         elem["Id"] = this.Id;
-        elem["MetaData"] = this.MetaData;
         var childrenIds = [];
         for(var i = 0; i < this.Children.length; i++) {
             childrenIds[i] = this.Children[i].Id;
@@ -278,16 +308,43 @@ var TopGoalNode = (function (_super) {
         elem["Children"] = childrenIds;
         if(this.Contexts.length != 0) {
             var contextId = [];
-            for(var i = 0; i < this.Contexts.length; i++) {
-                contextId.push(this.Contexts[i].Id);
+            for(var m = 0; m < this.Contexts.length; m++) {
+                contextId.push(this.Contexts[m].Id);
             }
             elem["Contexts"] = contextId;
         }
+        if(this.MetaData.length > 1) {
+            var MetaArray = [];
+            for(var h = 0; h < this.MetaData.length; h++) {
+                MetaArray[h] = this.MetaData[h];
+            }
+            elem["MetaData"] = MetaArray;
+        } else {
+            elem["MetaData"] = this.MetaData;
+        }
         jsonData.push(elem);
+        if(this.Contexts.length != 0) {
+            var contextElem = [];
+            for(var k = 0; k < this.Contexts.length; k++) {
+                contextElem["NodeType"] = this.Contexts[k].NodeType;
+                contextElem["Description"] = this.Contexts[k].Description;
+                contextElem["Id"] = this.Contexts[k].Id;
+                if(this.Contexts[k].MetaData.length > 1) {
+                    var MetaArray = [];
+                    for(var h = 0; h < this.Contexts[k].MetaData.length; h++) {
+                        MetaArray[h] = this.Contexts[k].MetaData[h];
+                    }
+                    contextElem["MetaData"] = MetaArray;
+                } else {
+                    contextElem["MetaData"] = this.Contexts[k].MetaData;
+                }
+            }
+            jsonData.push(contextElem);
+        }
         for(var j = 0; j < this.Children.length; j++) {
             this.Children[j].convertAllChildNodeIntoJson(jsonData);
         }
-        return jsonData;
+        return jsonOutput;
     };
     TopGoalNode.prototype.convertAllChildNodeIntoMarkdown = function (goalNum) {
         var outputStr = "";
