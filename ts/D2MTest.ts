@@ -25,6 +25,9 @@ export function test() : void {
 	{"type":"Means", "To":"Professor", "Source":"Splash", "Visible":"True"}, 10);
 	var context2: DCaseTree.ContextNode = new DCaseTree.ContextNode("Second Context",
 	{"type":"Means", "To":"Professor", "Source":"Splash", "Visible":"False"}, 11);
+	var context3: DCaseTree.ContextNode = new DCaseTree.ContextNode("Third Context",
+	{"type":"Means", "To":"Professor", "Source":"Splash", "Visible":"False"}, 12);
+
 
 
 	root.Contexts.push(context1);
@@ -44,6 +47,6 @@ export function test() : void {
 	child8.Children.push(child9);
 
 	root.dump();
-	root.convertAllChildNodeIntoMarkdown(0, 0);
+	root.convertAllChildNodeIntoMarkdown(0);
 }
 test();

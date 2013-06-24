@@ -77,7 +77,7 @@ export class DCaseNode {
 		console.log(strXml);
 	}
 
-	convertAllChildNodeIntoMarkdown(goalNum : number, contextsNum: number) : void {
+	convertAllChildNodeIntoMarkdown(goalNum : number) : void {
 		var outputStr : string = "";
 		var asterisk  : string = "";
 
@@ -95,12 +95,12 @@ export class DCaseNode {
 		outputText("---");
 
 		for(var metaName in this.MetaData){
-			outputText(metaName + ":" + this.MetaData[metaName]);
+			outputText(metaName + ": " + this.MetaData[metaName]);
 		}
 		outputText("---");
 
 		for(var k : number = 0; k < this.Children.length; k++) {
-			this.Children[k].convertAllChildNodeIntoMarkdown(goalNum, contextsNum);
+			this.Children[k].convertAllChildNodeIntoMarkdown(goalNum);
 		}
 	}
 
@@ -197,7 +197,7 @@ export class ContextAddableNode extends DCaseNode {
 	}
 
 
-	convertAllChildNodeIntoMarkdown(goalNum : number, contextsNum: number) : void {
+	convertAllChildNodeIntoMarkdown(goalNum : number) : void {
 		var outputStr : string = "";
 		var asterisk  : string = "";
 
@@ -215,16 +215,11 @@ export class ContextAddableNode extends DCaseNode {
 		outputText("---");
 
 		for(var metaName in this.MetaData){
-			outputText(metaName + ":" + this.MetaData[metaName]);
+			outputText(metaName + ": " + this.MetaData[metaName]);
 		}
 		outputText("---");
 
 		if(this.Contexts.length != 0){
-			asterisk = "";
-			var contextCount = contextsNum + 1;
-			for(var l: number = 0; l < contextCount; l++){
-				asterisk += "*";
-			}
 			for(var m: number = 0; m < this.Contexts.length; m++) {
 				outputStr = "";
 				outputStr += asterisk + this.Contexts[m].NodeType + " " + 
@@ -237,16 +232,13 @@ export class ContextAddableNode extends DCaseNode {
 				for (var metaName in this.Contexts[m].MetaData){
 					outputText(metaName + ":" + this.Contexts[m].MetaData[metaName]);
 				}
-				contextCount ++
-				asterisk += "*";
 				outputText("---");
 			}
-			contextsNum = contextCount - 1;
 		}
 
 
 		for(var k : number = 0; k < this.Children.length; k++) {
-			this.Children[k].convertAllChildNodeIntoMarkdown(goalNum, contextsNum);
+			this.Children[k].convertAllChildNodeIntoMarkdown(goalNum);
 		}
 	}
 
@@ -297,7 +289,7 @@ export class TopGoalNode extends GoalNode {
 
 
 
-	convertAllChildNodeIntoMarkdown(goalNum : number, contextsNum: number) : void {
+	convertAllChildNodeIntoMarkdown(goalNum : number) : void {
 		var outputStr : string = "";
 		var asterisk  : string = "";
 
@@ -322,11 +314,6 @@ export class TopGoalNode extends GoalNode {
 		outputText("---");
 
 		if(this.Contexts.length != 0){
-			asterisk = "";
-			var contextCount = contextsNum + 1;
-			for(var l: number = 0; l < contextCount; l++){
-				asterisk += "*";
-			}
 			for(var m: number = 0; m < this.Contexts.length; m++) {
 				outputStr = "";
 				outputStr += asterisk + this.Contexts[m].NodeType + " " + 
@@ -337,17 +324,14 @@ export class TopGoalNode extends GoalNode {
 				outputText("---");
 
 				for(var metaName in this.Contexts[m].MetaData){
-					outputText(metaName + ":" + this.Contexts[m].MetaData[metaName]);
+					outputText(metaName + ": " + this.Contexts[m].MetaData[metaName]);
 				}
-				contextCount ++;
-				asterisk += "*";
 				outputText("---");
 			}
-			contextsNum = contextCount - 1;
 		}
 
 		for(var k : number = 0; k < this.Children.length; k++) {
-			this.Children[k].convertAllChildNodeIntoMarkdown(goalNum, contextsNum);
+			this.Children[k].convertAllChildNodeIntoMarkdown(goalNum);
 		}
 	}
 

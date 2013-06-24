@@ -72,6 +72,12 @@ function test() {
         "Source": "Splash",
         "Visible": "False"
     }, 11);
+    var context3 = new DCaseTree.ContextNode("Third Context", {
+        "type": "Means",
+        "To": "Professor",
+        "Source": "Splash",
+        "Visible": "False"
+    }, 12);
     root.Contexts.push(context1);
     root.Children.push(child1);
     root.Children.push(child2);
@@ -84,7 +90,7 @@ function test() {
     child6.Children.push(child8);
     child8.Children.push(child9);
     root.dump();
-    root.convertAllChildNodeIntoMarkdown(0, 0);
+    root.convertAllChildNodeIntoMarkdown(0);
 }
 exports.test = test;
 test();
