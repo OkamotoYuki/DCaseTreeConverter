@@ -30,12 +30,20 @@ function test() {
         "Source": "Splash",
         "Visible": "False"
     }, 4);
-    var child5 = new DCaseTree.StrategyNode("Third Strategy", {
-        "type": "Means",
-        "To": "Professor",
-        "Source": "Splash",
-        "Visible": "False"
-    }, 5);
+    var child5 = new DCaseTree.StrategyNode("Third Strategy", [
+        {
+            "type": "Means",
+            "To": "Professor",
+            "Source": "Splash",
+            "Visible": "False"
+        }, 
+        {
+            "type": "Means",
+            "To": "Professor",
+            "Source": "Splash",
+            "Visible": "True"
+        }
+    ], 5);
     var child6 = new DCaseTree.StrategyNode("Fourth Strategy", {
         "type": "Means",
         "To": "Professor",

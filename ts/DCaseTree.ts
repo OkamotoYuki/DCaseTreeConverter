@@ -164,7 +164,7 @@ export class ContextAddableNode extends DCaseNode {
 
 	Contexts : ContextNode[];
 
-	constructor(NodeType : string, Description : string, MetaData : any, Id : number) {
+	constructor(NodeType : string, Description : string, MetaData : any[], Id : number) {
 		super(NodeType, Description, MetaData, Id);
 		this.Contexts = [];
 	}
@@ -175,7 +175,6 @@ export class ContextAddableNode extends DCaseNode {
 		elem["NodeType"]   = this.NodeType;
 		elem["Description"]= this.Description
 		elem["Id"] = this.Id;
-		elem["MetaData"]   = this.MetaData;
 
 		var childrenIds : number[] = [];
 		for(var i : number = 0; i < this.Children.length ; i++) {
@@ -191,7 +190,12 @@ export class ContextAddableNode extends DCaseNode {
 			}
 			elem["Contexts"] = contextId;
 		}
+		var MetaArray: string[] = [];
+		for(var h: number = 0; h < this.MetaData.length; h++){
+			MetaArray[h] = this.MetaData[h];
+		}
 
+		elem["MetaData"] = MetaArray;
 		jsonData.push(elem);
 
 		for(var j : number = 0; j < this.Children.length ; j++){
@@ -318,6 +322,41 @@ export class TopGoalNode extends GoalNode {
 		this.TopGoalId = Id;
 	}
 
+
+	convertAllChildNodeIntoJson(jsonData : any[]) : any[]{
+		jsonData["DCaseName"] = this.DCaseName;
+		jsonData["NodeCount"] = this.NodeCount;
+		jsonData["TopGoalId"] = this.TopGoalId;
+
+		var elem : any = {};
+		elem["NodeType"]   = this.NodeType;
+		elem["Description"]= this.Description
+		elem["Id"] = this.Id;
+		elem["MetaData"]   = this.MetaData;
+
+		var childrenIds : number[] = [];
+		for(var i : number = 0; i < this.Children.length ; i++) {
+			childrenIds[i] = this.Children[i].Id;
+		}
+		elem["Children"] = childrenIds;
+
+
+		if(this.Contexts.length != 0){
+			var contextId: any[] = [];
+			for(var i: number = 0; i < this.Contexts.length; i++){
+				contextId.push(this.Contexts[i].Id);
+			}
+			elem["Contexts"] = contextId;
+		}
+
+		jsonData.push(elem);
+
+		for(var j : number = 0; j < this.Children.length ; j++){
+			this.Children[j].convertAllChildNodeIntoJson(jsonData);
+		}
+
+		return jsonData;
+	}
 
 
 
