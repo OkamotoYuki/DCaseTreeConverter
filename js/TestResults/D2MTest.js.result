@@ -1,0 +1,108 @@
+Goal:1 (Contexts:10)
+	Strategy:1
+		Goal:3
+	Strategy:2
+		Goal:4 (Contexts:11)
+			Strategy:5
+				Goal:7
+			Strategy:6
+				Goal:8
+					Solution:9
+DCaseName: Sample DCase
+
+*Goal NodeName(not defined) 1
+Top Goal
+---
+type:Issue
+To:YNU
+Subject:JSSST
+Visible:True
+---
+*Context NodeName(Undefined)10
+First Context
+---
+type: Means
+To: Professor
+Source: Splash
+Visible: True
+---
+*Strategy NodeName(not defined) 1
+First Strategy
+---
+type: Means
+To: Professor
+Source: Splash
+Visible: True
+---
+**Goal NodeName(not defined) 3
+Second Goal
+---
+type: Means
+To: Professor
+Source: POPL
+Visible: False
+---
+*Strategy NodeName(not defined) 2
+Second Strategy
+---
+type: Means
+To: Professor
+Source: Splash
+Visible: True
+---
+**Goal NodeName(not defined) 4
+Third Goal
+---
+type: Means
+To: Professor
+Source: Splash
+Visible: False
+---
+**Context NodeName(Undefined)11
+Second Context
+---
+type:Means
+To:Professor
+Source:Splash
+Visible:False
+---
+**Strategy NodeName(not defined) 5
+Third Strategy
+---
+type: Means
+To: Professor
+Source: Splash
+Visible: False
+---
+***Goal NodeName(not defined) 7
+Fourth Goal
+---
+type: Means
+To: Professor
+Source: Splash
+Visible: True
+---
+**Strategy NodeName(not defined) 6
+Fourth Strategy
+---
+type: Means
+To: Professor
+Source: Splash
+Visible: True
+---
+***Goal NodeName(not defined) 8
+Fifth Goal
+---
+type: Means
+To: Professor
+Source: Splash
+Visible: True
+---
+***Solution NodeName(not defined) 9
+First Solution
+---
+type: Means
+To: Professor
+Source: Splash
+Visible: True
+---
