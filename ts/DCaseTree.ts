@@ -9,6 +9,7 @@ function outputText(text : string) : void {
 export class DCaseNode {
 
 	NodeType : string;
+	NodeName : string;
 	Description : string;
 	Id : number;
 	MetaData : any[];
@@ -16,6 +17,7 @@ export class DCaseNode {
 
 	constructor(NodeType : string, Description : string, MetaData : any, Id : number) {
 		this.NodeType = NodeType;
+		this.NodeName = null;
 		this.Description = Description;
 		this.MetaData = MetaData;
 		this.Id = Id;
@@ -149,6 +151,14 @@ export class SolutionNode extends DCaseNode {
 
 	constructor(Description : string, MetaData : any, Id : number) {
 		super("Solution", Description, MetaData, Id);
+	}
+
+}
+
+export class EvidenceNode extends DCaseNode {
+
+	constructor(Description : string, MetaData : any, Id : number) {
+		super("Evidence", Description, MetaData, Id);
 	}
 
 }

@@ -10,6 +10,7 @@ function outputText(text) {
 var DCaseNode = (function () {
     function DCaseNode(NodeType, Description, MetaData, Id) {
         this.NodeType = NodeType;
+        this.NodeName = null;
         this.Description = Description;
         this.MetaData = MetaData;
         this.Id = Id;
@@ -122,6 +123,14 @@ var SolutionNode = (function (_super) {
     return SolutionNode;
 })(DCaseNode);
 exports.SolutionNode = SolutionNode;
+var EvidenceNode = (function (_super) {
+    __extends(EvidenceNode, _super);
+    function EvidenceNode(Description, MetaData, Id) {
+        _super.call(this, "Evidence", Description, MetaData, Id);
+    }
+    return EvidenceNode;
+})(DCaseNode);
+exports.EvidenceNode = EvidenceNode;
 var ContextNode = (function (_super) {
     __extends(ContextNode, _super);
     function ContextNode(Description, MetaData, Id) {
