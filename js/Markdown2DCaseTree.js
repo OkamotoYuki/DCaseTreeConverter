@@ -62,11 +62,13 @@ var Converter = (function () {
             if(nodeIdMatcher.lastIndex <= 0) {
                 outputError("syntax is incorrect (nodeid)");
             }
+            var NodeName = lines[0].substring(0, nodeIdMatcher.lastIndex).trim();
             var nodeIdText = lines[0].substring(nodeIdMatcher.lastIndex);
             if(!isNumber(nodeIdText)) {
                 outputError("node id must be number");
             }
             var nodeId = parseInt(nodeIdText);
+            node.NodeName = NodeName;
             node.Id = nodeId;
         }
         node.Description = lines[1];
