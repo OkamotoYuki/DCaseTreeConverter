@@ -79,11 +79,13 @@ export class Converter {
 				outputError("syntax is incorrect (nodeid)");
 			}
 
-			var nodeIdText = lines[0].substring(nodeIdMatcher.lastIndex);
+			var NodeName : string = lines[0].substring(0, nodeIdMatcher.lastIndex).trim();
+			var nodeIdText : string = lines[0].substring(nodeIdMatcher.lastIndex);
 			if(!isNumber(nodeIdText)) {
 				outputError("node id must be number");
 			}
 			var nodeId : number = parseInt(nodeIdText);
+			node.NodeName = NodeName;
 			node.Id = nodeId;
 		}
 		node.Description = lines[1];

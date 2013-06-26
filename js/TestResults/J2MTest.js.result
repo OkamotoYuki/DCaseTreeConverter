@@ -1,0 +1,36 @@
+*Goal NodeName(not defined) 1
+G
+---
+---
+*Strategy NodeName(not defined) 2
+Alternative
+---
+---
+*Context NodeName(Undefined)9
+C
+---
+---
+**Goal NodeName(not defined) 3
+G
+---
+---
+**Strategy NodeName(not defined) 5
+s
+---
+---
+***Goal NodeName(not defined) 6
+t1
+---
+---
+***Goal NodeName(not defined) 7
+D-script
+---
+---
+***Solution NodeName(not defined) 8
+x
+---
+---
+**Goal NodeName(not defined) 4
+t2
+---
+---

@@ -7,3 +7,4 @@ export function test() : void {
 	root.Children.push(child);
 	root.dump();
 }
+test();

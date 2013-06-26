@@ -4,7 +4,7 @@
   "description": "DCaseTreeConverter",
   "main": "TestAll.js",
   "scripts": {
-    "test": "node TestAll.js"
+    "test": "./TestAll"
   },
   "repository": {
     "type": "git",

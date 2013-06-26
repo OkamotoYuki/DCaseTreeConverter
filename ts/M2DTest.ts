@@ -8,3 +8,4 @@ export function test() : void {
 	var root : DCaseTree.TopGoalNode = m2dc.parseMarkdown(test);
 	root.dump();
 }
+test();

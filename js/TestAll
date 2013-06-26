@@ -1,0 +1,10 @@
+#!/bin/bash
+
+for script in `ls *Test.js`
+do
+	node ${script} | diff - ./TestResults/${script}.result
+	if [ $? -ne 0 ]
+	then
+		echo Faild in \"${script}\"
+	fi
+done

@@ -7,3 +7,4 @@ function test() {
     console.log(root.convertAllChildNodeIntoJson([]));
 }
 exports.test = test;
+test();

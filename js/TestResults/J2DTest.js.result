@@ -1,0 +1,8 @@
+Goal:1
+	Strategy:2 (Contexts:9)
+		Goal:3
+			Strategy:5
+				Goal:6
+				Goal:7
+					Solution:8
+		Goal:4
