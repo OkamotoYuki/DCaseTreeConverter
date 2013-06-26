@@ -47,38 +47,10 @@ export class DCaseNode {
 		return jsonData;
 	}
 
-	convertAllChildNodeIntoXml() : void {
-	var $dcaseObj : JQuery = $("dcase:Argument");
-		var linkNum: number = 1;
-		var $nodeObj : JQuery = $("rootBasicnode");
-		var nodeId : string   = this.Id.toString();
-		$nodeObj.attr("xsi:type", "dcase:"+ this.NodeType);
-		$nodeObj.attr("id", nodeId);
-	//	if(this.NodeName == undefined){
+	convertAllChildNodeIntoXml(linkArray : string [] ) : void {
 
-		$nodeObj.attr("name", "Undefined");
-	//	}
-	//	$nodeObj.attr("desc", this.Description);
-
-		$nodeObj.appendTo($dcaseObj);
-
-		for(var i = 0; i < this.Children.length; i ++){
-			var $linkObj : JQuery = $("rootBasicLink");
-			$linkObj.attr("xsi:type", "dcase:link");
-			$linkObj.attr("id",  nodeId + "-" + this.Children[i].Id.toString());
-			$linkObj.attr("source", nodeId);
-			$linkObj.attr("target", this.Children[i].Id.toString());
-			$linkObj.attr("name", "Link_" + linkNum.toString());
-
-			linkNum++;
-
-			$linkObj.appendTo($dcaseObj);
-
-			this.Children[i].convertAllChildNodeIntoXml();
-		}
-
-		var strXml = $dcaseObj.text();
-		console.log(strXml);
+		outputText("\t<rootBasicNode xsi:type=\"dcase:" + this.NodeType + "\" id=\""
+			+ this.Id + "\" name=\"" + this.NodeName + "\" desc=\"" + this.Description + "\"/>");
 	}
 
 	convertAllChildNodeIntoMarkdown(goalNum : number) : void {
@@ -86,7 +58,7 @@ export class DCaseNode {
 		var asterisk  : string = "";
 
 		if(this.NodeType == "Goal"){
-			goalNum++;	
+			goalNum++;
 		}
 
 		for(var i : number = 0; i < goalNum; i++){
@@ -172,6 +144,15 @@ export class ContextNode extends DCaseNode {
 		return jsonData;
 	}
 
+	convertAllChildNodeIntoXml(linkArray : string[]) : void {
+
+		var nodeStr : string = "\t<rootBasicNode xsi:type=\"dcase:" + this.NodeType + "\" id=\""
+			+ this.Id + "\" name=\"" + this.NodeName + "\" desc=\"" + this.Description + "\"/>";
+		outputText(nodeStr);
+
+	}
+
+
 	convertAllChildNodeIntoMarkdonw(goalNum : number) : void {
 		var outputStr : string = "";
 		var asterisk  : string = "";
@@ -235,16 +216,12 @@ export class ContextAddableNode extends DCaseNode {
 		}
 		elem["Children"] = childrenIds;
 
-
 		var contextId: number[] = [];
 		for(var i: number = 0; i < this.Contexts.length; i++){
 			contextId.push(this.Contexts[i].Id);
 		}
 		elem["Contexts"] = contextId;
-
-
 		elem["MetaData"] = this.MetaData;
-
 
 		jsonData.push(elem);
 
@@ -259,6 +236,33 @@ export class ContextAddableNode extends DCaseNode {
 		return jsonData;
 	}
 
+
+	convertAllChildNodeIntoXml(linkArray : string[]) : void {
+		outputText("\t<rootBasicNode xsi:type=\"dcase:" + this.NodeType + "\" id=\""
+			+ this.Id + "\" name=\"" + this.NodeName + "\" desc=\"" + this.Description + "\"/>");
+
+		for(var i : number = 0; i < this.Contexts.length; i++) {
+			var linkContext : string = "\t<rootBasicLink xsi:type=\"dcase:link\" id=\"Undefined\""
+				+ " source=\"" + this.Id + "\" target=\"#" + this.Contexts[i].Id + "\" name=\"Link_"
+				+ (linkArray.length + 1) + "\"/>";
+
+			linkArray.push(linkContext);
+
+			this.Contexts[i].convertAllChildNodeIntoXml(linkArray);
+		}
+
+		for(var j : number = 0; j < this.Children.length; j++) {
+			var linkChild : string = "\t<rootBasicLink xsi:type=\"dcase:link\" id=\"Undefined\""
+				+ " source=\"" + this.Id + "\" target=\"#" + this.Children[j].Id + "\" name=\"Link_" 
+				+ (linkArray.length + 1) + "\"/>";
+
+			linkArray.push(linkChild);
+
+			this.Children[j].convertAllChildNodeIntoXml(linkArray);
+		}
+
+
+	}
 
 	convertAllChildNodeIntoMarkdown(goalNum : number) : void {
 		var outputStr : string = "";
@@ -391,7 +395,42 @@ export class TopGoalNode extends GoalNode {
 		return jsonOutput;
 	}
 
+	convertAllChildNodeIntoXml(linkArray : string[]) : void {
+		var xmlStr : string;
+		xmlStr =  "<dcase:Argument xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+		+ " xmlns:dcase=\"http://www.dependalopble-os.net/2010/03/dcase/\""
+		+ " id=\"_6A0EENScEeKCdP-goLYu9g\">";
 
+		outputText(xmlStr);
+		outputText("\t<rootBasicNode xsi:type=\"dcase:" + this.NodeType + "\" id=\""
+			+ this.Id + "\" name=\"" + this.NodeName + "\" desc=\"" + this.Description + "\"/>");
+
+		for(var i : number = 0; i < this.Contexts.length; i++) {
+			var linkContext : string = "\t<rootBasicLink xsi:type=\"dcase:link\" id=\"Undefined\""
+				+ " source=\"" + this.Id + "\" target=\"#" + this.Contexts[i].Id + "\" name=\"Link_"
+				+ (linkArray.length + 1) + "\"/>";
+
+			linkArray.push(linkContext);
+
+			this.Contexts[i].convertAllChildNodeIntoXml(linkArray);
+		}
+
+		for(var j : number = 0; j < this.Children.length; j++) {
+			var linkChild : string = "\t<rootBasicLink xsi:type=\"dcase:link\" id=\"Undefined\""
+				+ " source=\"" + this.Id + "\" target=\"#" + this.Children[i].Id + "\" name=\"Link_" 
+				+ (linkArray.length + 1) + "\"/>";
+
+			linkArray.push(linkChild);
+
+			this.Children[j].convertAllChildNodeIntoXml(linkArray);
+		}
+
+		for(var k : number = 0; k < linkArray.length; k++) {
+			outputText(linkArray[k]);
+		}
+
+		outputText("</dcase:Argument>");
+	}
 
 	convertAllChildNodeIntoMarkdown(goalNum : number) : void {
 		var outputStr : string = "";

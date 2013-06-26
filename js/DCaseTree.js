@@ -3,7 +3,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var $ = require("jquery")
+
 function outputText(text) {
     console.log(text);
 }
@@ -34,28 +34,8 @@ var DCaseNode = (function () {
         }
         return jsonData;
     };
-    DCaseNode.prototype.convertAllChildNodeIntoXml = function () {
-        var $dcaseObj = $("dcase:Argument");
-        var linkNum = 1;
-        var $nodeObj = $("rootBasicnode");
-        var nodeId = this.Id.toString();
-        $nodeObj.attr("xsi:type", "dcase:" + this.NodeType);
-        $nodeObj.attr("id", nodeId);
-        $nodeObj.attr("name", "Undefined");
-        $nodeObj.appendTo($dcaseObj);
-        for(var i = 0; i < this.Children.length; i++) {
-            var $linkObj = $("rootBasicLink");
-            $linkObj.attr("xsi:type", "dcase:link");
-            $linkObj.attr("id", nodeId + "-" + this.Children[i].Id.toString());
-            $linkObj.attr("source", nodeId);
-            $linkObj.attr("target", this.Children[i].Id.toString());
-            $linkObj.attr("name", "Link_" + linkNum.toString());
-            linkNum++;
-            $linkObj.appendTo($dcaseObj);
-            this.Children[i].convertAllChildNodeIntoXml();
-        }
-        var strXml = $dcaseObj.text();
-        console.log(strXml);
+    DCaseNode.prototype.convertAllChildNodeIntoXml = function (linkArray) {
+        outputText("\t<rootBasicNode xsi:type=\"dcase:" + this.NodeType + "\" id=\"" + this.Id + "\" name=\"" + this.NodeName + "\" desc=\"" + this.Description + "\"/>");
     };
     DCaseNode.prototype.convertAllChildNodeIntoMarkdown = function (goalNum) {
         var outputStr = "";
@@ -136,6 +116,10 @@ var ContextNode = (function (_super) {
         jsonData.push(elem);
         return jsonData;
     };
+    ContextNode.prototype.convertAllChildNodeIntoXml = function (linkArray) {
+        var nodeStr = "\t<rootBasicNode xsi:type=\"dcase:" + this.NodeType + "\" id=\"" + this.Id + "\" name=\"" + this.NodeName + "\" desc=\"" + this.Description + "\"/>";
+        outputText(nodeStr);
+    };
     ContextNode.prototype.convertAllChildNodeIntoMarkdonw = function (goalNum) {
         var outputStr = "";
         var asterisk = "";
@@ -204,6 +188,19 @@ var ContextAddableNode = (function (_super) {
             this.Children[j].convertAllChildNodeIntoJson(jsonData);
         }
         return jsonData;
+    };
+    ContextAddableNode.prototype.convertAllChildNodeIntoXml = function (linkArray) {
+        outputText("\t<rootBasicNode xsi:type=\"dcase:" + this.NodeType + "\" id=\"" + this.Id + "\" name=\"" + this.NodeName + "\" desc=\"" + this.Description + "\"/>");
+        for(var i = 0; i < this.Contexts.length; i++) {
+            var linkContext = "\t<rootBasicLink xsi:type=\"dcase:link\" id=\"Undefined\"" + " source=\"" + this.Id + "\" target=\"#" + this.Contexts[i].Id + "\" name=\"Link_" + (linkArray.length + 1) + "\"/>";
+            linkArray.push(linkContext);
+            this.Contexts[i].convertAllChildNodeIntoXml(linkArray);
+        }
+        for(var j = 0; j < this.Children.length; j++) {
+            var linkChild = "\t<rootBasicLink xsi:type=\"dcase:link\" id=\"Undefined\"" + " source=\"" + this.Id + "\" target=\"#" + this.Children[j].Id + "\" name=\"Link_" + (linkArray.length + 1) + "\"/>";
+            linkArray.push(linkChild);
+            this.Children[j].convertAllChildNodeIntoXml(linkArray);
+        }
     };
     ContextAddableNode.prototype.convertAllChildNodeIntoMarkdown = function (goalNum) {
         var outputStr = "";
@@ -310,6 +307,26 @@ var TopGoalNode = (function (_super) {
             this.Children[j].convertAllChildNodeIntoJson(jsonData);
         }
         return jsonOutput;
+    };
+    TopGoalNode.prototype.convertAllChildNodeIntoXml = function (linkArray) {
+        var xmlStr;
+        xmlStr = "<dcase:Argument xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" + " xmlns:dcase=\"http://www.dependalopble-os.net/2010/03/dcase/\"" + " id=\"_6A0EENScEeKCdP-goLYu9g\">";
+        outputText(xmlStr);
+        outputText("\t<rootBasicNode xsi:type=\"dcase:" + this.NodeType + "\" id=\"" + this.Id + "\" name=\"" + this.NodeName + "\" desc=\"" + this.Description + "\"/>");
+        for(var i = 0; i < this.Contexts.length; i++) {
+            var linkContext = "\t<rootBasicLink xsi:type=\"dcase:link\" id=\"Undefined\"" + " source=\"" + this.Id + "\" target=\"#" + this.Contexts[i].Id + "\" name=\"Link_" + (linkArray.length + 1) + "\"/>";
+            linkArray.push(linkContext);
+            this.Contexts[i].convertAllChildNodeIntoXml(linkArray);
+        }
+        for(var j = 0; j < this.Children.length; j++) {
+            var linkChild = "\t<rootBasicLink xsi:type=\"dcase:link\" id=\"Undefined\"" + " source=\"" + this.Id + "\" target=\"#" + this.Children[i].Id + "\" name=\"Link_" + (linkArray.length + 1) + "\"/>";
+            linkArray.push(linkChild);
+            this.Children[j].convertAllChildNodeIntoXml(linkArray);
+        }
+        for(var k = 0; k < linkArray.length; k++) {
+            outputText(linkArray[k]);
+        }
+        outputText("</dcase:Argument>");
     };
     TopGoalNode.prototype.convertAllChildNodeIntoMarkdown = function (goalNum) {
         var outputStr = "";
