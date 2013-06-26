@@ -99,5 +99,4 @@ function test() {
     child8.Children.push(child9);
     root.convertAllChildNodeIntoMarkdown(0);
 }
-exports.test = test;
 test();

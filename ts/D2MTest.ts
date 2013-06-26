@@ -1,6 +1,6 @@
 import DCaseTree = module("DCaseTree");
 
-export function test() : void {
+function test() : void {
 	var root : DCaseTree.TopGoalNode  = new DCaseTree.TopGoalNode("Sample DCase",11,"Top Goal",
 	[{"Type":"Issue", "To":"YNU", "Subject":"JSSST", "Visible":"True"},
 	 {"Type":"Issue", "To":"YNU", "Subject":"JSSST", "Visible":"True"}], 1);

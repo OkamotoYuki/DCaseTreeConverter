@@ -108,5 +108,4 @@ function test() {
     child8.Children.push(child9);
     console.log(root.convertAllChildNodeIntoJson([]));
 }
-exports.test = test;
 test();

@@ -6,5 +6,4 @@ function test() {
     var root = x2dc.parseXml(test);
     root.dump();
 }
-exports.test = test;
 test();

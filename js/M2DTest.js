@@ -6,5 +6,4 @@ function test() {
     var root = m2dc.parseMarkdown(test);
     root.dump();
 }
-exports.test = test;
 test();

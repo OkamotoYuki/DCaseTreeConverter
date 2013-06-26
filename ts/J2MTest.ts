@@ -1,7 +1,7 @@
 import DCaseTree = module("DCaseTree");
 import Json2DCaseTree = module("Json2DCaseTree");
 
-export function test() : void {
+function test() : void {
 	var test : any = {
 			"DCaseName" : "test",
 			"NodeCount" : 8,

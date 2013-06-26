@@ -90,5 +90,4 @@ function test() {
     var root = j2dc.parseJson(test);
     root.dump();
 }
-exports.test = test;
 test();

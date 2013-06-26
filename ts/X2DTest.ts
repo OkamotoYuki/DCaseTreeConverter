@@ -1,7 +1,7 @@
 import DCaseTree = module("DCaseTree");
 import Xml2DCaseTree = module("Xml2DCaseTree");
 
-export function test() : void {
+function test() : void {
 	var test : string =
 		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 		+ "<dcase:Argument xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:dcase=\"http://www.dependable-os.net/2010/03/dcase/\" id=\"_6A0EENScEeKCdP-goLYu9g\">\n"
