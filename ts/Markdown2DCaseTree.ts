@@ -250,6 +250,31 @@ export class Converter {
 		}
 	}
 
+	parseEvidence(text : string, depth : number, parentNode : DCaseTree.DCaseNode) : void {
+		if(parentNode == null) {
+			outputError("evidence node must be child node");
+		}
+
+		var separator : RegExp = new RegExp("\n\\*{" + depth + "}Evidence", "g");
+		var evidenceBlocks = text.split(separator);
+		var evidenceMatcher : RegExp = new RegExp("\\*{" + depth + "}Evidence", "g");
+		evidenceMatcher.exec(evidenceBlocks[0]);
+		evidenceBlocks[0] = evidenceBlocks[0].substring(evidenceMatcher.lastIndex);
+
+		for(var i : number = 0; i < evidenceBlocks.length; i++) {
+			var evidenceNode : DCaseTree.EvidenceNode = new DCaseTree.EvidenceNode(null, null, null);
+			var nodeDataText : string = evidenceBlocks[i];
+
+			this.parseNodeData(nodeDataText, evidenceNode);
+
+			if(evidenceNode.Id == null) {
+				evidenceNode.Id = this.createNewNodeId();
+			}
+
+			parentNode.Children.push(evidenceNode);
+		}
+	}
+
 	parseGoal(text : string, depth : number, parentNode : DCaseTree.DCaseNode) : DCaseTree.DCaseNode {
 		depth++;
 
@@ -291,6 +316,9 @@ export class Converter {
 			}
 			else if(splitByLines(childBlockText)[0].match("Solution") != null) {
 				this.parseSolution(childBlockText, depth, goalNode);
+			}
+			else if(splitByLines(childBlockText)[0].match("Evidence") != null) {
+				this.parseEvidence(childBlockText, depth, goalNode);
 			}
 			else if(splitByLines(childBlockText)[0].match("Context") != null) {
 				this.parseContext(childBlockText, depth, goalNode);

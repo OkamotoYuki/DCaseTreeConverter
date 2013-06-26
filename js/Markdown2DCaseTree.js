@@ -196,6 +196,25 @@ var Converter = (function () {
             parentNode.Children.push(solutionNode);
         }
     };
+    Converter.prototype.parseEvidence = function (text, depth, parentNode) {
+        if(parentNode == null) {
+            outputError("evidence node must be child node");
+        }
+        var separator = new RegExp("\n\\*{" + depth + "}Evidence", "g");
+        var evidenceBlocks = text.split(separator);
+        var evidenceMatcher = new RegExp("\\*{" + depth + "}Evidence", "g");
+        evidenceMatcher.exec(evidenceBlocks[0]);
+        evidenceBlocks[0] = evidenceBlocks[0].substring(evidenceMatcher.lastIndex);
+        for(var i = 0; i < evidenceBlocks.length; i++) {
+            var evidenceNode = new DCaseTree.EvidenceNode(null, null, null);
+            var nodeDataText = evidenceBlocks[i];
+            this.parseNodeData(nodeDataText, evidenceNode);
+            if(evidenceNode.Id == null) {
+                evidenceNode.Id = this.createNewNodeId();
+            }
+            parentNode.Children.push(evidenceNode);
+        }
+    };
     Converter.prototype.parseGoal = function (text, depth, parentNode) {
         depth++;
         var goalNodes = [];
@@ -227,6 +246,8 @@ var Converter = (function () {
                 this.parseStrategy(childBlockText, depth, goalNode);
             } else if(splitByLines(childBlockText)[0].match("Solution") != null) {
                 this.parseSolution(childBlockText, depth, goalNode);
+            } else if(splitByLines(childBlockText)[0].match("Evidence") != null) {
+                this.parseEvidence(childBlockText, depth, goalNode);
             } else if(splitByLines(childBlockText)[0].match("Context") != null) {
                 this.parseContext(childBlockText, depth, goalNode);
             }
