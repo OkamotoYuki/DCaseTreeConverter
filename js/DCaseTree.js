@@ -27,15 +27,7 @@ var DCaseNode = (function () {
             childrenIds[i] = this.Children[i].Id;
         }
         elem["Children"] = childrenIds;
-        if(this.MetaData.length > 1) {
-            var metaArray = [];
-            for(var h = 0; h < this.MetaData.length; h++) {
-                metaArray.push(this.MetaData[h]);
-            }
-            elem["MetaData"] = metaArray;
-        } else {
-            elem["MetaData"] = this.MetaData;
-        }
+        elem["MetaData"] = this.MetaData;
         jsonData.push(elem);
         for(var j = 0; j < this.Children.length; j++) {
             this.Children[j].convertAllChildNodeIntoJson(jsonData);
@@ -81,7 +73,6 @@ var DCaseNode = (function () {
             outputText("---");
         } else if(this.MetaData.length > 1) {
             for(var j = 0; j < this.MetaData.length; j++) {
-                var keyString = Object.keys(this.MetaData[j]);
                 outputText("---");
                 for(var keyName in this.MetaData[j]) {
                     outputText(keyName + ": " + this.MetaData[j][keyName]);
@@ -136,6 +127,15 @@ var ContextNode = (function (_super) {
     function ContextNode(Description, MetaData, Id) {
         _super.call(this, "Context", Description, MetaData, Id);
     }
+    ContextNode.prototype.convertAllChildNodeIntoJson = function (jsonData) {
+        var elem = [];
+        elem["NodeType"] = this.NodeType;
+        elem["Description"] = this.Description;
+        elem["Id"] = this.Id;
+        elem["MetaData"] = this.MetaData;
+        jsonData.push(elem);
+        return jsonData;
+    };
     return ContextNode;
 })(DCaseNode);
 exports.ContextNode = ContextNode;
@@ -164,39 +164,15 @@ var ContextAddableNode = (function (_super) {
             childrenIds[i] = this.Children[i].Id;
         }
         elem["Children"] = childrenIds;
-        if(this.Contexts.length != 0) {
-            var contextId = [];
-            for(var i = 0; i < this.Contexts.length; i++) {
-                contextId.push(this.Contexts[i].Id);
-            }
-            elem["Contexts"] = contextId;
+        var contextId = [];
+        for(var i = 0; i < this.Contexts.length; i++) {
+            contextId.push(this.Contexts[i].Id);
         }
-        if(this.MetaData.length > 1) {
-            var MetaArray = [];
-            for(var h = 0; h < this.MetaData.length; h++) {
-                MetaArray[h] = this.MetaData[h];
-            }
-            elem["MetaData"] = MetaArray;
-        } else {
-            elem["MetaData"] = this.MetaData;
-        }
+        elem["Contexts"] = contextId;
+        elem["MetaData"] = this.MetaData;
         jsonData.push(elem);
-        if(this.Contexts.length != 0) {
-            for(var k = 0; k < this.Contexts.length; k++) {
-                elem["NodeType"] = this.Contexts[k].NodeType;
-                elem["Description"] = this.Contexts[k].Description;
-                elem["Id"] = this.Contexts[k].Id;
-                if(this.Contexts[k].MetaData.length > 1) {
-                    var MetaArray = [];
-                    for(var h = 0; h < this.Contexts[k].MetaData.length; h++) {
-                        MetaArray[h] = this.Contexts[k].MetaData[h];
-                    }
-                    elem["MetaData"] = MetaArray;
-                } else {
-                    elem["MetaData"] = this.Contexts[k].MetaData;
-                }
-            }
-            jsonData.push(elem);
+        for(var h = 0; h < this.Contexts.length; h++) {
+            this.Contexts[h].convertAllChildNodeIntoJson(jsonData);
         }
         for(var j = 0; j < this.Children.length; j++) {
             this.Children[j].convertAllChildNodeIntoJson(jsonData);
@@ -219,7 +195,6 @@ var ContextAddableNode = (function (_super) {
             outputText("---");
         } else if(this.MetaData.length > 1) {
             for(var j = 0; j < this.MetaData.length; j++) {
-                var keyString = Object.keys(this.MetaData[j]);
                 outputText("---");
                 for(var keyName in this.MetaData[j]) {
                     outputText(keyName + ": " + this.MetaData[j][keyName]);
@@ -242,7 +217,6 @@ var ContextAddableNode = (function (_super) {
                     outputText("---");
                 } else if(this.Contexts[m].MetaData.length > 1) {
                     for(var j = 0; j < this.Contexts[m].MetaData.length; j++) {
-                        var keyString = Object.keys(this.Contexts[m].MetaData[j]);
                         outputText("---");
                         for(var keyName in this.Contexts[m].MetaData[j]) {
                             outputText(keyName + ": " + this.Contexts[m].MetaData[j][keyName]);
@@ -322,33 +296,10 @@ var TopGoalNode = (function (_super) {
             }
             elem["Contexts"] = contextId;
         }
-        if(this.MetaData.length > 1) {
-            var MetaArray = [];
-            for(var h = 0; h < this.MetaData.length; h++) {
-                MetaArray[h] = this.MetaData[h];
-            }
-            elem["MetaData"] = MetaArray;
-        } else {
-            elem["MetaData"] = this.MetaData;
-        }
+        elem["MetaData"] = this.MetaData;
         jsonData.push(elem);
-        if(this.Contexts.length != 0) {
-            var contextElem = [];
-            for(var k = 0; k < this.Contexts.length; k++) {
-                contextElem["NodeType"] = this.Contexts[k].NodeType;
-                contextElem["Description"] = this.Contexts[k].Description;
-                contextElem["Id"] = this.Contexts[k].Id;
-                if(this.Contexts[k].MetaData.length > 1) {
-                    var MetaArray = [];
-                    for(var h = 0; h < this.Contexts[k].MetaData.length; h++) {
-                        MetaArray[h] = this.Contexts[k].MetaData[h];
-                    }
-                    contextElem["MetaData"] = MetaArray;
-                } else {
-                    contextElem["MetaData"] = this.Contexts[k].MetaData;
-                }
-            }
-            jsonData.push(contextElem);
+        for(var k = 0; k < this.Contexts.length; k++) {
+            this.Contexts[k].convertAllChildNodeIntoJson(jsonData);
         }
         for(var j = 0; j < this.Children.length; j++) {
             this.Children[j].convertAllChildNodeIntoJson(jsonData);
@@ -372,7 +323,6 @@ var TopGoalNode = (function (_super) {
             outputText("---");
         } else if(this.MetaData.length > 1) {
             for(var j = 0; j < this.MetaData.length; j++) {
-                var keyString = Object.keys(this.MetaData[j]);
                 outputText("---");
                 for(var keyName in this.MetaData[j]) {
                     outputText(keyName + ": " + this.MetaData[j][keyName]);
@@ -395,7 +345,6 @@ var TopGoalNode = (function (_super) {
                     outputText("---");
                 } else if(this.Contexts[m].MetaData.length > 1) {
                     for(var j = 0; j < this.Contexts[m].MetaData.length; j++) {
-                        var keyString = Object.keys(this.Contexts[m].MetaData[j]);
                         outputText("---");
                         for(var keyName in this.Contexts[m].MetaData[j]) {
                             outputText(keyName + ": " + this.Contexts[m].MetaData[j][keyName]);

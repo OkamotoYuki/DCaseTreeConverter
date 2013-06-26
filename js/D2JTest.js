@@ -10,7 +10,7 @@ function test() {
         {
             "Type": "Issue",
             "To": "YNU",
-            "Subject": "JSSST",
+            "Subject": "Thesis",
             "Visible": "True"
         }
     ], 1);

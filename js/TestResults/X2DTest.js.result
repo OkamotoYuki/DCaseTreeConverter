@@ -1,5 +1,4 @@
 Goal:0
-	Strategy:1
-		Goal:3
-			Evidence:2
-		Goal:4
+        Strategy:1
+                Goal:3
+                Goal:4
