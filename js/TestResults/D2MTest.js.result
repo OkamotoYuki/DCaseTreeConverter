@@ -1,6 +1,6 @@
 DCaseName: Sample DCase
 
-*Goal NodeName(not defined) 1
+*Goal null 1
 Top Goal
 ---
 Type: Issue
@@ -13,7 +13,7 @@ To: YNU
 Subject: JSSST
 Visible: True
 ---
-*Context NodeName(Undefined)10
+*Context null 10
 First Context
 ---
 Type: Means
@@ -21,7 +21,7 @@ To: Professor
 Source: Splash
 Visible: True
 ---
-*Strategy NodeName(not defined) 1
+*Strategy null 1
 First Strategy
 ---
 Type: Means
@@ -29,7 +29,7 @@ To: Professor
 Source: Splash
 Visible: True
 ---
-**Goal NodeName(not defined) 3
+**Goal null 3
 Second Goal
 ---
 Type: Means
@@ -37,7 +37,7 @@ To: Professor
 Source: POPL
 Visible: False
 ---
-*Strategy NodeName(not defined) 2
+*Strategy null 2
 Second Strategy
 ---
 Type: Means
@@ -45,7 +45,7 @@ To: Professor
 Source: Splash
 Visible: True
 ---
-**Goal NodeName(not defined) 4
+**Goal null 4
 Third Goal
 ---
 Type: Means
@@ -53,7 +53,7 @@ To: Professor
 Source: Splash
 Visible: False
 ---
-**Context NodeName(Undefined)11
+**Context null 11
 Second Context
 ---
 Type: Means
@@ -61,7 +61,7 @@ To: Professor
 Source: Splash
 Visible: False
 ---
-**Strategy NodeName(not defined) 5
+**Strategy null 5
 Third Strategy
 ---
 Type: Means
@@ -69,7 +69,7 @@ To: Professor
 Source: Splash
 Visible: False
 ---
-***Goal NodeName(not defined) 7
+***Goal null 7
 Fourth Goal
 ---
 Type: Means
@@ -77,7 +77,7 @@ To: Professor
 Source: Splash
 Visible: True
 ---
-**Strategy NodeName(not defined) 6
+**Strategy null 6
 Fourth Strategy
 ---
 Type: Means
@@ -85,7 +85,7 @@ To: Professor
 Source: Splash
 Visible: True
 ---
-***Goal NodeName(not defined) 8
+***Goal null 8
 Fifth Goal
 ---
 Type: Means
@@ -93,7 +93,7 @@ To: Professor
 Source: Splash
 Visible: True
 ---
-***Solution NodeName(not defined) 9
+***Solution null 9
 First Solution
 ---
 Type: Means

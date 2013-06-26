@@ -93,7 +93,7 @@ export class DCaseNode {
 			asterisk += "*";
 		}
 
-		outputStr += asterisk + this.NodeType + " " + "NodeName(not defined)" + " " + this.Id;
+		outputStr += asterisk + this.NodeType + " " + this.NodeName + " " + this.Id;
 		outputText(outputStr)
 		outputText(this.Description);
 
@@ -166,10 +166,42 @@ export class ContextNode extends DCaseNode {
 		elem["NodeType"]   = this.NodeType;
 		elem["Description"]= this.Description;
 		elem["Id"] = this.Id;
-
 		elem["MetaData"] = this.MetaData;
+
 		jsonData.push(elem);
 		return jsonData;
+	}
+
+	convertAllChildNodeIntoMarkdonw(goalNum : number) : void {
+		var outputStr : string = "";
+		var asterisk  : string = "";
+
+		for(var i: number = 0; i < goalNum; i++){
+			asterisk += "*";
+		}
+
+		outputStr += asterisk + this.NodeType + " " +
+				this.NodeName + " " + this.Id;
+
+		outputText(outputStr);
+		outputText(this.Description);
+
+		if(this.MetaData.length == 0){
+			outputText("---");
+		} else if (this.MetaData.length > 1) {
+			for(var j : number = 0; j < this.MetaData.length; j++){
+				outputText("---");
+				for(var keyName in this.MetaData[j]){
+					outputText(keyName + ": " + this.MetaData[j][keyName]);
+				}
+			}
+		} else {
+			outputText("---");
+			for(var keyName in this.MetaData){
+				outputText(keyName + ": " + this.MetaData[keyName]);
+			}
+		}
+		outputText("---");
 	}
 }
 
@@ -240,7 +272,7 @@ export class ContextAddableNode extends DCaseNode {
 			asterisk += "*";
 		}
 
-		outputStr += asterisk + this.NodeType + " " + "NodeName(not defined)" + " " + this.Id;
+		outputStr += asterisk + this.NodeType + " " + this.NodeName + " " + this.Id;
 		outputText(outputStr)
 		outputText(this.Description);
 
@@ -263,35 +295,9 @@ export class ContextAddableNode extends DCaseNode {
 
 		outputText("---");
 
-		if(this.Contexts.length != 0){
-			for(var m: number = 0; m < this.Contexts.length; m++) {
-				outputStr = "";
-				outputStr += asterisk + this.Contexts[m].NodeType + " " + 
-					"NodeName(Undefined)" + this.Contexts[m].Id;
-
-				outputText(outputStr);
-				outputText(this.Contexts[m].Description);
-
-
-				if(this.Contexts[m].MetaData.length == 0){
-					outputText("---");
-				} else if (this.Contexts[m].MetaData.length > 1) {
-					for(var j : number = 0; j < this.Contexts[m].MetaData.length; j++){
-						outputText("---");
-						for(var keyName in this.Contexts[m].MetaData[j]){
-							outputText(keyName + ": " + this.Contexts[m].MetaData[j][keyName]);
-						}
-					}
-				} else {
-					outputText("---");
-					for(var keyName in this.Contexts[m].MetaData){
-						outputText(keyName + ": " + this.Contexts[m].MetaData[keyName]);
-					}
-				}
-				outputText("---");
-			}
+		for(var h : number = 0; h < this.Contexts.length; h++) {
+			this.Contexts[h].convertAllChildNodeIntoMarkdown(goalNum);
 		}
-
 
 		for(var k : number = 0; k < this.Children.length; k++) {
 			this.Children[k].convertAllChildNodeIntoMarkdown(goalNum);
@@ -401,7 +407,7 @@ export class TopGoalNode extends GoalNode {
 
 		outputText("DCaseName: " + this.DCaseName + "\n");
 
-		outputStr += asterisk + this.NodeType + " " + "NodeName(not defined)" + " " + this.TopGoalId;
+		outputStr += asterisk + this.NodeType + " " + this.NodeName + " " + this.TopGoalId;
 		outputText(outputStr)
 		outputText(this.Description);
 
@@ -423,32 +429,8 @@ export class TopGoalNode extends GoalNode {
 		}
 		outputText("---");
 
-		if(this.Contexts.length != 0){
-			for(var m: number = 0; m < this.Contexts.length; m++) {
-				outputStr = "";
-				outputStr += asterisk + this.Contexts[m].NodeType + " " +
-					"NodeName(Undefined)" + this.Contexts[m].Id;
-
-				outputText(outputStr);
-				outputText(this.Contexts[m].Description);
-
-				if(this.Contexts[m].MetaData.length == 0){
-					outputText("---");
-				} else if (this.Contexts[m].MetaData.length > 1) {
-					for(var j : number = 0; j < this.Contexts[m].MetaData.length; j++){
-						outputText("---");
-						for(var keyName in this.Contexts[m].MetaData[j]){
-							outputText(keyName + ": " + this.Contexts[m].MetaData[j][keyName]);
-						}
-					}
-				} else {
-					outputText("---");
-					for(var keyName in this.Contexts[m].MetaData){
-						outputText(keyName + ": " + this.Contexts[m].MetaData[keyName]);
-					}
-				}
-				outputText("---");
-			}
+		for(var h : number = 0; h < this.Contexts.length; h++) {
+			this.Contexts[h].convertAllChildNodeIntoMarkdown(goalNum);
 		}
 
 		for(var k : number = 0; k < this.Children.length; k++) {

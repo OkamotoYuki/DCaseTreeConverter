@@ -66,7 +66,7 @@ var DCaseNode = (function () {
         for(var i = 0; i < goalNum; i++) {
             asterisk += "*";
         }
-        outputStr += asterisk + this.NodeType + " " + "NodeName(not defined)" + " " + this.Id;
+        outputStr += asterisk + this.NodeType + " " + this.NodeName + " " + this.Id;
         outputText(outputStr);
         outputText(this.Description);
         if(this.MetaData.length == 0) {
@@ -136,6 +136,32 @@ var ContextNode = (function (_super) {
         jsonData.push(elem);
         return jsonData;
     };
+    ContextNode.prototype.convertAllChildNodeIntoMarkdonw = function (goalNum) {
+        var outputStr = "";
+        var asterisk = "";
+        for(var i = 0; i < goalNum; i++) {
+            asterisk += "*";
+        }
+        outputStr += asterisk + this.NodeType + " " + this.NodeName + " " + this.Id;
+        outputText(outputStr);
+        outputText(this.Description);
+        if(this.MetaData.length == 0) {
+            outputText("---");
+        } else if(this.MetaData.length > 1) {
+            for(var j = 0; j < this.MetaData.length; j++) {
+                outputText("---");
+                for(var keyName in this.MetaData[j]) {
+                    outputText(keyName + ": " + this.MetaData[j][keyName]);
+                }
+            }
+        } else {
+            outputText("---");
+            for(var keyName in this.MetaData) {
+                outputText(keyName + ": " + this.MetaData[keyName]);
+            }
+        }
+        outputText("---");
+    };
     return ContextNode;
 })(DCaseNode);
 exports.ContextNode = ContextNode;
@@ -188,7 +214,7 @@ var ContextAddableNode = (function (_super) {
         for(var i = 0; i < goalNum; i++) {
             asterisk += "*";
         }
-        outputStr += asterisk + this.NodeType + " " + "NodeName(not defined)" + " " + this.Id;
+        outputStr += asterisk + this.NodeType + " " + this.NodeName + " " + this.Id;
         outputText(outputStr);
         outputText(this.Description);
         if(this.MetaData.length == 0) {
@@ -207,29 +233,8 @@ var ContextAddableNode = (function (_super) {
             }
         }
         outputText("---");
-        if(this.Contexts.length != 0) {
-            for(var m = 0; m < this.Contexts.length; m++) {
-                outputStr = "";
-                outputStr += asterisk + this.Contexts[m].NodeType + " " + "NodeName(Undefined)" + this.Contexts[m].Id;
-                outputText(outputStr);
-                outputText(this.Contexts[m].Description);
-                if(this.Contexts[m].MetaData.length == 0) {
-                    outputText("---");
-                } else if(this.Contexts[m].MetaData.length > 1) {
-                    for(var j = 0; j < this.Contexts[m].MetaData.length; j++) {
-                        outputText("---");
-                        for(var keyName in this.Contexts[m].MetaData[j]) {
-                            outputText(keyName + ": " + this.Contexts[m].MetaData[j][keyName]);
-                        }
-                    }
-                } else {
-                    outputText("---");
-                    for(var keyName in this.Contexts[m].MetaData) {
-                        outputText(keyName + ": " + this.Contexts[m].MetaData[keyName]);
-                    }
-                }
-                outputText("---");
-            }
+        for(var h = 0; h < this.Contexts.length; h++) {
+            this.Contexts[h].convertAllChildNodeIntoMarkdown(goalNum);
         }
         for(var k = 0; k < this.Children.length; k++) {
             this.Children[k].convertAllChildNodeIntoMarkdown(goalNum);
@@ -316,7 +321,7 @@ var TopGoalNode = (function (_super) {
             asterisk += "*";
         }
         outputText("DCaseName: " + this.DCaseName + "\n");
-        outputStr += asterisk + this.NodeType + " " + "NodeName(not defined)" + " " + this.TopGoalId;
+        outputStr += asterisk + this.NodeType + " " + this.NodeName + " " + this.TopGoalId;
         outputText(outputStr);
         outputText(this.Description);
         if(this.MetaData.length == 0) {
@@ -335,29 +340,8 @@ var TopGoalNode = (function (_super) {
             }
         }
         outputText("---");
-        if(this.Contexts.length != 0) {
-            for(var m = 0; m < this.Contexts.length; m++) {
-                outputStr = "";
-                outputStr += asterisk + this.Contexts[m].NodeType + " " + "NodeName(Undefined)" + this.Contexts[m].Id;
-                outputText(outputStr);
-                outputText(this.Contexts[m].Description);
-                if(this.Contexts[m].MetaData.length == 0) {
-                    outputText("---");
-                } else if(this.Contexts[m].MetaData.length > 1) {
-                    for(var j = 0; j < this.Contexts[m].MetaData.length; j++) {
-                        outputText("---");
-                        for(var keyName in this.Contexts[m].MetaData[j]) {
-                            outputText(keyName + ": " + this.Contexts[m].MetaData[j][keyName]);
-                        }
-                    }
-                } else {
-                    outputText("---");
-                    for(var keyName in this.Contexts[m].MetaData) {
-                        outputText(keyName + ": " + this.Contexts[m].MetaData[keyName]);
-                    }
-                }
-                outputText("---");
-            }
+        for(var h = 0; h < this.Contexts.length; h++) {
+            this.Contexts[h].convertAllChildNodeIntoMarkdown(goalNum);
         }
         for(var k = 0; k < this.Children.length; k++) {
             this.Children[k].convertAllChildNodeIntoMarkdown(goalNum);
