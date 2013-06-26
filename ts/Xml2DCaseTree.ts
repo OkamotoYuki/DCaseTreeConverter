@@ -41,6 +41,39 @@ export class Converter {
 		}
 	}
 
+	makeTree(nodeIdText : string) : DCaseTree.DCaseNode {
+		var thisNode : DCaseTree.DCaseNode = this.nodes[nodeIdText];
+
+		for(var linkIdText in this.links) {
+			var link : DCaseLink = this.links[linkIdText];
+
+			if(link.source == nodeIdText || link.target == nodeIdText) {
+				var childNodeIdText : string;
+
+				if(link.source == nodeIdText) {
+					childNodeIdText = link.target;
+				}
+				else {
+					childNodeIdText = link.source;
+				}
+				delete this.links[linkIdText];
+
+				var childNode : DCaseTree.DCaseNode = this.nodes[childNodeIdText];
+
+				if(childNode.NodeType == "Context") {
+					var thisContextAddableNode : DCaseTree.ContextAddableNode = <DCaseTree.ContextAddableNode>thisNode;
+					thisContextAddableNode.Contexts.push(<DCaseTree.ContextNode>childNode);
+				}
+				else {
+					thisNode.Children.push(childNode);
+					this.makeTree(childNodeIdText);
+				}
+			}
+		}
+
+		return thisNode;
+	}
+
 	parseXml(xmlText : string) : DCaseTree.TopGoalNode {
 		var self : Converter = this;
 
@@ -69,7 +102,6 @@ export class Converter {
 			var IdText : any = $(this).attr("id");
 			var source : string = $(this).attr("source").substring(1); // #abc -> abc
 			var target : string = $(this).attr("target").substring(1); // #abc -> abc
-
 			var link : DCaseLink = new DCaseLink(source, target);
 
 			self.links[IdText] = link;
@@ -77,15 +109,9 @@ export class Converter {
 			return null;
 		});
 
-		for(var IdText in this.links) {
-			var link : DCaseLink = this.links[IdText];
-			var sourceNode : DCaseTree.DCaseNode = this.nodes[link.source];
-			var targetNode : DCaseTree.DCaseNode = this.nodes[link.target];
-			targetNode.Children.push(sourceNode); // FIXME direction of target <-> source?
-			// TODO support context node
-		}
+		var rootNode : DCaseTree.TopGoalNode = <DCaseTree.TopGoalNode>this.makeTree(this.rootNodeIdText);
 
-		return <DCaseTree.TopGoalNode>this.nodes[this.rootNodeIdText];
+		return rootNode;
 	}
 
 }

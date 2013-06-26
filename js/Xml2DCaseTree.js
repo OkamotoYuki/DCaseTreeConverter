@@ -29,6 +29,30 @@ var Converter = (function () {
             this.NodeCount += 1;
         }
     };
+    Converter.prototype.makeTree = function (nodeIdText) {
+        var thisNode = this.nodes[nodeIdText];
+        for(var linkIdText in this.links) {
+            var link = this.links[linkIdText];
+            if(link.source == nodeIdText || link.target == nodeIdText) {
+                var childNodeIdText;
+                if(link.source == nodeIdText) {
+                    childNodeIdText = link.target;
+                } else {
+                    childNodeIdText = link.source;
+                }
+                delete this.links[linkIdText];
+                var childNode = this.nodes[childNodeIdText];
+                if(childNode.NodeType == "Context") {
+                    var thisContextAddableNode = thisNode;
+                    thisContextAddableNode.Contexts.push(childNode);
+                } else {
+                    thisNode.Children.push(childNode);
+                    this.makeTree(childNodeIdText);
+                }
+            }
+        }
+        return thisNode;
+    };
     Converter.prototype.parseXml = function (xmlText) {
         var self = this;
         $(xmlText).find("rootBasicNode").each(function (index, elem) {
@@ -54,13 +78,8 @@ var Converter = (function () {
             self.links[IdText] = link;
             return null;
         });
-        for(var IdText in this.links) {
-            var link = this.links[IdText];
-            var sourceNode = this.nodes[link.source];
-            var targetNode = this.nodes[link.target];
-            targetNode.Children.push(sourceNode);
-        }
-        return this.nodes[this.rootNodeIdText];
+        var rootNode = this.makeTree(this.rootNodeIdText);
+        return rootNode;
     };
     return Converter;
 })();
