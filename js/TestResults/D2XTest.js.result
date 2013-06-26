@@ -1,0 +1,27 @@
+<dcase:Argument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dcase="http://www.dependalopble-os.net/2010/03/dcase/" id="_6A0EENScEeKCdP-goLYu9g">
+	<rootBasicNode xsi:type="dcase:Goal" id="1" name="null" desc="Top Goal"/>
+	<rootBasicNode xsi:type="dcase:Context" id="10" name="null" desc="First Context"/>
+	<rootBasicNode xsi:type="dcase:Strategy" id="1" name="null" desc="First Strategy"/>
+	<rootBasicNode xsi:type="dcase:Goal" id="3" name="null" desc="Second Goal"/>
+	<rootBasicNode xsi:type="dcase:Strategy" id="2" name="null" desc="Second Strategy"/>
+	<rootBasicNode xsi:type="dcase:Goal" id="4" name="null" desc="Third Goal"/>
+	<rootBasicNode xsi:type="dcase:Context" id="11" name="null" desc="Second Context"/>
+	<rootBasicNode xsi:type="dcase:Context" id="12" name="null" desc="Third Context"/>
+	<rootBasicNode xsi:type="dcase:Strategy" id="5" name="null" desc="Third Strategy"/>
+	<rootBasicNode xsi:type="dcase:Goal" id="7" name="null" desc="Fourth Goal"/>
+	<rootBasicNode xsi:type="dcase:Strategy" id="6" name="null" desc="Fourth Strategy"/>
+	<rootBasicNode xsi:type="dcase:Goal" id="8" name="null" desc="Fifth Goal"/>
+	<rootBasicNode xsi:type="dcase:Solution" id="9" name="null" desc="First Solution"/>
+	<rootBasicLink xsi:type="dcase:link" id="Undefined" source="1" target="#10" name="Link_1"/>
+	<rootBasicLink xsi:type="dcase:link" id="Undefined" source="1" target="#2" name="Link_2"/>
+	<rootBasicLink xsi:type="dcase:link" id="Undefined" source="1" target="#3" name="Link_3"/>
+	<rootBasicLink xsi:type="dcase:link" id="Undefined" source="1" target="#2" name="Link_4"/>
+	<rootBasicLink xsi:type="dcase:link" id="Undefined" source="2" target="#4" name="Link_5"/>
+	<rootBasicLink xsi:type="dcase:link" id="Undefined" source="4" target="#11" name="Link_6"/>
+	<rootBasicLink xsi:type="dcase:link" id="Undefined" source="4" target="#12" name="Link_7"/>
+	<rootBasicLink xsi:type="dcase:link" id="Undefined" source="4" target="#5" name="Link_8"/>
+	<rootBasicLink xsi:type="dcase:link" id="Undefined" source="5" target="#7" name="Link_9"/>
+	<rootBasicLink xsi:type="dcase:link" id="Undefined" source="4" target="#6" name="Link_10"/>
+	<rootBasicLink xsi:type="dcase:link" id="Undefined" source="6" target="#8" name="Link_11"/>
+	<rootBasicLink xsi:type="dcase:link" id="Undefined" source="8" target="#9" name="Link_12"/>
+</dcase:Argument>
