@@ -1,7 +1,3 @@
 #!/bin/bash
 
 tsc ts/test/*.ts -out js
-
-cd js/DCaseTreeConverter
-
-npm install
