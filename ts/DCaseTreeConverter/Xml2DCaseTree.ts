@@ -1,4 +1,4 @@
-///<reference path='../d.ts/DefinitelyTyped/jquery/jquery.d.ts'/>
+///<reference path='./d.ts/DefinitelyTyped/jquery/jquery.d.ts'/>
 import $ = module("jquery");
 import DCaseTree = module("DCaseTree");
 

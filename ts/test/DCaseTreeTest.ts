@@ -1,4 +1,4 @@
-import DCaseTree = module("DCaseTree");
+import DCaseTree = module("../DCaseTreeConverter/DCaseTree");
 
 export function test() : void {
 	var root : DCaseTree.DCaseNode = new DCaseTree.GoalNode("", "hogehoge", 1);

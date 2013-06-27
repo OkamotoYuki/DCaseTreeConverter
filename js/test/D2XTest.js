@@ -1,6 +1,6 @@
-var DCaseTree = require("./DCaseTree")
+var DCaseTree = require("../DCaseTreeConverter/DCaseTree")
 function test() {
-    var root = new DCaseTree.TopGoalNode("Sample DCase", 11, "Top Goal", [
+    var root = new DCaseTree.TopGoalNode("Sample DCase", 12, "Top Goal", [
         {
             "Type": "Issue",
             "To": "YNU",
@@ -10,7 +10,7 @@ function test() {
         {
             "Type": "Issue",
             "To": "YNU",
-            "Subject": "JSSST",
+            "Subject": "Thesis",
             "Visible": "True"
         }
     ], 1);
@@ -38,12 +38,20 @@ function test() {
         "Source": "Splash",
         "Visible": "False"
     }, 4);
-    var child5 = new DCaseTree.StrategyNode("Third Strategy", {
-        "Type": "Means",
-        "To": "Professor",
-        "Source": "Splash",
-        "Visible": "False"
-    }, 5);
+    var child5 = new DCaseTree.StrategyNode("Third Strategy", [
+        {
+            "Type": "Means",
+            "To": "Professor",
+            "Source": "Splash",
+            "Visible": "False"
+        }, 
+        {
+            "Type": "Means",
+            "To": "Professor",
+            "Source": "Splash",
+            "Visible": "True"
+        }
+    ], 5);
     var child6 = new DCaseTree.StrategyNode("Fourth Strategy", {
         "Type": "Means",
         "To": "Professor",
@@ -92,11 +100,13 @@ function test() {
     child1.Children.push(child3);
     child2.Children.push(child4);
     child4.Contexts.push(context2);
+    child4.Contexts.push(context3);
     child4.Children.push(child5);
     child4.Children.push(child6);
     child5.Children.push(child7);
     child6.Children.push(child8);
     child8.Children.push(child9);
-    root.convertAllChildNodeIntoMarkdown(0);
+    root.convertAllChildNodeIntoXml([]);
 }
+exports.test = test;
 test();

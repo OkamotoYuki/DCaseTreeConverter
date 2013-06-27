@@ -1,5 +1,5 @@
-import DCaseTree = module("DCaseTree");
-import Json2DCaseTree = module("Json2DCaseTree");
+import DCaseTree = module("../DCaseTreeConverter/DCaseTree");
+import Json2DCaseTree = module("../DCaseTreeConverter/Json2DCaseTree");
 
 function test() : void {
 	var test : any = {
@@ -90,6 +90,7 @@ function test() : void {
 
 	var j2dc : Json2DCaseTree.Converter = new Json2DCaseTree.Converter();
 	var root : DCaseTree.TopGoalNode = j2dc.parseJson(test);
-	root.dump();
+
+	root.convertAllChildNodeIntoMarkdown(0);
 }
 test();

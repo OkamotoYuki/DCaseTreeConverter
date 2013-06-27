@@ -2,7 +2,6 @@
   "name": "DCaseTreeConverter",
   "version": "0.0.1",
   "description": "DCaseTreeConverter",
-  "main": "TestAll.js",
   "scripts": {
     "test": "./TestAll"
   },

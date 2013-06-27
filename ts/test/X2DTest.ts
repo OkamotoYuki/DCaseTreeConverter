@@ -1,5 +1,5 @@
-import DCaseTree = module("DCaseTree");
-import Xml2DCaseTree = module("Xml2DCaseTree");
+import DCaseTree = module("../DCaseTreeConverter/DCaseTree");
+import Xml2DCaseTree = module("../DCaseTreeConverter/Xml2DCaseTree");
 
 function test() : void {
 	var test : string =

@@ -1,7 +1,3 @@
-///<reference path='../d.ts/DefinitelyTyped/jquery/jquery.d.ts'/>
-
-import $ = module("jquery");
-
 function outputText(text : string) : void {
 	console.log(text);
 }

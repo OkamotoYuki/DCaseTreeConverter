@@ -1,6 +1,7 @@
 #!/bin/bash
 
-tsc ts/*.ts -out js
+tsc ts/test/*.ts -out js
 
-cd js
+cd js/DCaseTreeConverter
+
 npm install

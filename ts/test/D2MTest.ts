@@ -1,10 +1,9 @@
+import DCaseTree = module("../DCaseTreeConverter/DCaseTree");
 
-import DCaseTree = module("DCaseTree");
-
-export function test() : void {
-	var root : DCaseTree.TopGoalNode  = new DCaseTree.TopGoalNode("Sample DCase",12,"Top Goal",
+function test() : void {
+	var root : DCaseTree.TopGoalNode  = new DCaseTree.TopGoalNode("Sample DCase",11,"Top Goal",
 	[{"Type":"Issue", "To":"YNU", "Subject":"JSSST", "Visible":"True"},
-	{"Type":"Issue", "To":"YNU", "Subject":"Thesis", "Visible":"True"}], 1);
+	 {"Type":"Issue", "To":"YNU", "Subject":"JSSST", "Visible":"True"}], 1);
 	var child1: DCaseTree.StrategyNode = new DCaseTree.StrategyNode("First Strategy",
 	{"Type":"Means", "To":"Professor", "Source":"Splash", "Visible":"True"}, 1);
 	var child2: DCaseTree.StrategyNode = new DCaseTree.StrategyNode("Second Strategy",
@@ -14,8 +13,7 @@ export function test() : void {
 	var child4: DCaseTree.GoalNode = new DCaseTree.GoalNode("Third Goal",
 	{"Type":"Means", "To":"Professor", "Source":"Splash", "Visible":"False"}, 4);
 	var child5: DCaseTree.StrategyNode = new DCaseTree.StrategyNode("Third Strategy",
-	[{"Type":"Means", "To":"Professor", "Source":"Splash", "Visible":"False"},
-	{"Type":"Means", "To":"Professor", "Source":"Splash", "Visible":"True"}],5);
+	{"Type":"Means", "To":"Professor", "Source":"Splash", "Visible":"False"}, 5);
 	var child6: DCaseTree.StrategyNode = new DCaseTree.StrategyNode("Fourth Strategy",
 	{"Type":"Means", "To":"Professor", "Source":"Splash", "Visible":"True"}, 6);
 	var child7: DCaseTree.GoalNode = new DCaseTree.GoalNode("Fourth Goal",
@@ -31,6 +29,8 @@ export function test() : void {
 	var context3: DCaseTree.ContextNode = new DCaseTree.ContextNode("Third Context",
 	{"Type":"Means", "To":"Professor", "Source":"Splash", "Visible":"False"}, 12);
 
+
+
 	root.Contexts.push(context1);
 	root.Children.push(child1);
 	root.Children.push(child2);
@@ -39,7 +39,6 @@ export function test() : void {
 	child2.Children.push(child4);
 
 	child4.Contexts.push(context2);
-	child4.Contexts.push(context3);
 	child4.Children.push(child5);
 	child4.Children.push(child6);
 
@@ -48,6 +47,6 @@ export function test() : void {
 
 	child8.Children.push(child9);
 
-	root.convertAllChildNodeIntoXml([]);
+	root.convertAllChildNodeIntoMarkdown(0);
 }
 test();

@@ -1,4 +1,4 @@
-var DCaseTree = require("./DCaseTree")
+var DCaseTree = require("../DCaseTreeConverter/DCaseTree")
 function test() {
     var root = new DCaseTree.TopGoalNode("Sample DCase", 12, "Top Goal", [
         {

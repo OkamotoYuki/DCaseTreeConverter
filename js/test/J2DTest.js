@@ -1,5 +1,5 @@
 
-var Json2DCaseTree = require("./Json2DCaseTree")
+var Json2DCaseTree = require("../DCaseTreeConverter/Json2DCaseTree")
 function test() {
     var test = {
         "DCaseName": "test",
@@ -88,6 +88,6 @@ function test() {
     };
     var j2dc = new Json2DCaseTree.Converter();
     var root = j2dc.parseJson(test);
-    root.convertAllChildNodeIntoMarkdown(0);
+    root.dump();
 }
 test();
